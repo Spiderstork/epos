@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Wine",
+    "price": 10,
+    "barcode": "123",
+    "category": "Alcohol"
+  },
+  {
+    "name": "Beer",
+    "price": 8,
+    "barcode": "456",
+    "category": "Alcohol"
+  },
+  {
+    "name": "Coffee",
+    "price": 3,
+    "barcode": "789",
+    "category": "Cafe"
+  },
+  {
+    "name": "Burger",
+    "price": 6,
+    "barcode": "321",
+    "category": "Food"
+  },
+  {
+    "barcode": "5051892198080",
+    "name": "the iron giant",
+    "price": 5,
+    "category": null
+  },
+  {
+    "barcode": "5055201844163",
+    "name": "apocalypse now",
+    "price": 7,
+    "category": null
+  },
+  {
+    "barcode": "55",
+    "name": "wood",
+    "price": 4.5,
+    "category": "Camp"
+  },
+  {
+    "barcode": "5055002555718",
+    "name": "Donnie Darko",
+    "price": 2.5,
+    "category": null
+  }
+]

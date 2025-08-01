@@ -1,0 +1,18 @@
+// app global css in SCSS form
+.center {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  .center h1 {
+    font-size: 2.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .center p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
