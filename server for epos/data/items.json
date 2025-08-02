@@ -46,5 +46,17 @@
     "name": "Donnie Darko",
     "price": 2.5,
     "category": null
+  },
+  {
+    "barcode": "5051368243931",
+    "name": "multi pack",
+    "price": 2,
+    "category": null
+  },
+  {
+    "barcode": "66",
+    "name": "ham",
+    "price": 3,
+    "category": "Food"
   }
 ]

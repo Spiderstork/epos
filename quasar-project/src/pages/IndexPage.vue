@@ -52,6 +52,22 @@
     />
 
     <!-- List of Items -->
+    <div class="q-pa-md q-gutter-sm" style="padding-bottom: 60px;">
+
+  <!-- barcode input -->
+  <input
+    ref="barcodeInputRef"
+    v-model="barcodeInput"
+    @keyup.enter="addItemByBarcode"
+    style="opacity: 0; width: 1px; height: 1px; position: absolute;"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+  />
+
+  <!-- Scrollable List of Items -->
+  <div style="max-height: 600px; overflow-y: auto;">
     <q-bar v-for="(item, index) in items_selling" :key="index">
       <div>£{{ item.price }}</div>
       <q-space />
@@ -66,32 +82,46 @@
         aria-label="Delete item"
       />
     </q-bar>
+  </div>
 
-    <!-- Total Bar -->
-    <q-bar class="bg-grey-3 text-weight-bold">
-      <div>£{{ total }}</div>
-      <q-space />
-      <div>Total</div>
-      <q-btn 
-        dense
-        flat
-        color="negative"
-        icon="delete"
-        @click="clearItems()"
-        style="margin-left: 10px;"
-        aria-label="Delete item">
-      </q-btn>
-    </q-bar>
+  <!-- Total Bar -->
+  <q-bar class="bg-grey-3 text-weight-bold q-mt-md">
+    <div>£{{ total }}</div>
+    <q-space />
+    <div>Total</div>
+    <q-btn 
+      dense
+      flat
+      color="negative"
+      icon="delete"
+      @click="clearItems()"
+      style="margin-left: 10px;"
+      aria-label="Delete item"
+    />
+    <q-btn 
+      dense
+      size="md"
+      color="primary"
+      label="Pay"
+      @click="goToPaymentPage"
+      style="margin-left: 10px;" 
+    />
+  </q-bar>
+</div>
   </div>
 </template>
 
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useCartStore } from 'stores/cart'
 import EssentialLink from 'components/EssentialLink.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const items = ref([])
+const cart = useCartStore()
 
 onMounted(async () => {
   const response = await axios.get('http://localhost:3000/api/items')
@@ -103,7 +133,6 @@ onMounted(async () => {
 ----------------------------- */
 const barcodeInput = ref('')
 const barcodeInputRef = ref(null)
-const items_selling = ref([])
 const selectedCategory = ref(null)
 const isSubDrawerOpen = ref(false)
 const drawerstarter = ref(false)
@@ -111,13 +140,15 @@ const drawerstarter = ref(false)
 /* -----------------------------
    Computed Properties
 ----------------------------- */
+const items_selling = computed(() => cart.items)
+
 const total = computed(() =>
-  items_selling.value.reduce((sum, item) => sum + item.price, 0)
+  cart.items.reduce((sum, item) => sum + item.price, 0)
 )
 
 const categoryItems = computed(() => {
   if (!selectedCategory.value) return []
-  return items.value.filter(i => i.category === selectedCategory.value.title)
+  return items.value.filter(item => item.category === selectedCategory.value.title)
 })
 
 /* -----------------------------
@@ -129,7 +160,7 @@ function addItemByBarcode() {
 
   const found = items.value.find(i => i.barcode === code)
   if (found) {
-    items_selling.value.push({ ...found })
+    cart.addItem(found)
   } else {
     alert('Item not found for barcode: ' + code)
   }
@@ -139,15 +170,15 @@ function addItemByBarcode() {
 }
 
 function addItemFromCategory(item) {
-  items_selling.value.push({ ...item })
+  cart.addItem(item)
 }
 
 function removeItem(index) {
-  items_selling.value.splice(index, 1)
+  cart.items.splice(index, 1)
 }
 
 function clearItems() {
-  items_selling.value = []
+  cart.clear()
   barcodeInputRef.value.focus()
 }
 
@@ -158,6 +189,13 @@ function openSubDrawer(link) {
   selectedCategory.value = link
   isSubDrawerOpen.value = true
 }
+
+function goToPaymentPage() {
+  router.push({ path: '/payment' })
+}
+
+
+
 
 const rightlinksList = [
   { title: 'Alcohol', icon: 'local_bar', link: '/' },
