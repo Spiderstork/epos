@@ -67,7 +67,7 @@
       />
     </q-bar>
 
-    <!-- Sticky Total Bar -->
+    <!-- Total Bar -->
     <q-bar class="bg-grey-3 text-weight-bold">
       <div>£{{ total }}</div>
       <q-space />
