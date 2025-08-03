@@ -52,9 +52,10 @@
     />
 
     <!-- List of Items -->
-    <div class="q-pa-md q-gutter-sm" style="padding-bottom: 60px;">
+<!-- Dynamic Container -->
+<div class="dynamic-container q-pa-md q-gutter-sm">
 
-  <!-- barcode input -->
+  <!-- Hidden Barcode Input -->
   <input
     ref="barcodeInputRef"
     v-model="barcodeInput"
@@ -67,7 +68,7 @@
   />
 
   <!-- Scrollable List of Items -->
-  <div style="max-height: 600px; overflow-y: auto;">
+  <div class="scroll-area">
     <q-bar v-for="(item, index) in items_selling" :key="index">
       <div>£{{ item.price }}</div>
       <q-space />
@@ -107,7 +108,9 @@
       style="margin-left: 10px;" 
     />
   </q-bar>
+
 </div>
+
   </div>
 </template>
 

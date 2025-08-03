@@ -16,5 +16,14 @@
     font-size: 1.1rem;
     line-height: 1.6;
   }
-
-  
+.scroll-area {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+.dynamic-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* prevent overscroll */
+  overflow: hidden;
+}

@@ -9,11 +9,14 @@
         <q-btn dense flat icon="arrow_back" @click="router.back()" aria-label="Go back" />
       </q-toolbar>
 
-      <q-card-section>
-        <div class="text-h6">Order Summary</div>
+      <!-- Entire content inside dynamic container -->
+      <q-card-section class="dynamic-container">
+        
+        <!-- Order Summary Header -->
+        <div class="text-h6 q-mb-sm">Order Summary</div>
 
-        <!-- Scrollable container -->
-        <div style="max-height: 500px; overflow-y: auto;">
+        <!-- Scrollable order list -->
+        <div class="scroll-area">
           <q-list>
             <q-item v-for="(item, index) in items" :key="index">
               <q-item-section>{{ item.name }}</q-item-section>
@@ -22,20 +25,22 @@
           </q-list>
         </div>
 
+        <!-- Total amount fixed below scroll -->
         <div class="text-right q-mt-md text-weight-bold">
           Total: £{{ total }}
         </div>
-      </q-card-section>
-      <q-separator />
 
-      <q-card-section>
-        <div class="text-h6 q-mb-sm">Choose Payment Method</div>
-        <q-btn-group spread>
-          <q-btn label="Cash" color="primary" @click="submitPayment('cash')" />
-          <q-btn size="lg"  label="Card" color="secondary" @click="submitPayment('card')" />
-        </q-btn-group>
+        <!-- Payment methods pinned at bottom -->
+        <div class="q-mt-md">
+          <div class="text-h6 q-mb-sm">Choose Payment Method</div>
+          <q-btn-group spread>
+            <q-btn label="Cash" color="primary" @click="submitPayment('cash')" />
+            <q-btn size="lg" label="Card" color="secondary" @click="submitPayment('card')" />
+          </q-btn-group>
+        </div>
+
       </q-card-section>
-      
+
     </q-card>
   </q-page>
 </template>
