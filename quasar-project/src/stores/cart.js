@@ -1,18 +1,37 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
 
-export const useCartStore = defineStore('cart', () => {
-  const items = ref([])
+export const useCartStore = defineStore('cart', {
+  state: () => ({
+    items: []
+  }),
 
-  const total = computed(() => items.value.reduce((sum, item) => sum + item.price, 0))
+  getters: {
+    total(state) {
+      return state.items.reduce((sum, item) => sum + item.quantity * item.unit_price, 0)
+    }
+  },
 
-  function addItem(item) {
-    items.value.push(item)
+  actions: {
+    addItem(newItem) {
+      const existingItem = this.items.find(i => i.barcode === newItem.barcode)
+      if (existingItem) {
+        existingItem.quantity += 1
+      } else {
+        this.items.push({
+          barcode: newItem.barcode,
+          name: newItem.name,
+          quantity: 1,
+          unit_price: newItem.price
+        })
+      }
+    },
+
+    removeItem(index) {
+      this.items.splice(index, 1)
+    },
+
+    clear() {
+      this.items = []
+    }
   }
-
-  function clear() {
-    items.value = []
-  }
-
-  return { items, total, addItem, clear }
 })

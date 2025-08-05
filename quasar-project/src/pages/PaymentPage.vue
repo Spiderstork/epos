@@ -19,8 +19,12 @@
         <div class="scroll-area">
           <q-list>
             <q-item v-for="(item, index) in items" :key="index">
-              <q-item-section>{{ item.name }}</q-item-section>
-              <q-item-section side>£{{ item.price }}</q-item-section>
+              <q-item-section>
+                {{ item.name }} <small>(x{{ item.quantity }})</small>
+              </q-item-section>
+              <q-item-section side>
+                £{{ (item.quantity * item.unit_price).toFixed(2) }}
+              </q-item-section>
             </q-item>
           </q-list>
         </div>
@@ -49,6 +53,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from 'stores/cart'
+import axios from 'axios'
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
@@ -56,11 +61,17 @@ const router = useRouter()
 const cart = useCartStore()
 
 const items = computed(() => cart.items)
-
-// Assuming your cart store has a getter or computed `total` property.
-// If not, you can compute total here as:
-// const total = computed(() => cart.items.reduce((sum, i) => sum + i.price, 0))
 const total = computed(() => cart.total)
+
+async function saveSale(sale) {
+  try {
+    await axios.post('http://localhost:3000/api/sales', sale)
+    $q.notify({ type: 'positive', message: 'Sale saved successfully.' })
+  } catch (error) {
+    $q.notify({ type: 'negative', message: 'Failed to save sale.' })
+    throw error
+  }
+}
 
 function submitPayment(method) {
   if (method === 'cash') {
@@ -83,7 +94,7 @@ function submitPayment(method) {
       cancel: true,
       persistent: true
     })
-    .onOk(cashGivenStr => {
+    .onOk(async cashGivenStr => {
       const cashGiven = parseFloat(cashGivenStr)
       if (isNaN(cashGiven) || cashGiven < total.value) {
         $q.notify({ type: 'negative', message: 'Invalid amount entered.' })
@@ -91,26 +102,71 @@ function submitPayment(method) {
       }
       const change = cashGiven - total.value
 
-      // Show change in a persistent modal dialog (blocks other actions)
-      $q.dialog({
-        title: 'Change Due',
-        message: `Payment of £${cashGiven.toFixed(2)} accepted.<br><br><strong>Change to return: £${change.toFixed(2)}</strong>`,
-        html: true,
-        ok: true,
-        persistent: true
-      }).onOk(() => {
-        cart.clear()
-        router.push('/')
-      })
+      // Prepare sale data
+      const sale = {
+        timestamp: new Date().toISOString(),
+        items: items.value.map(i => ({
+          barcode: i.barcode,
+          name: i.name,
+          quantity: i.quantity,
+          unit_price: i.unit_price
+        })),
+        total: total.value,
+        payment_received: cashGiven,
+        payment_type: 'cash'
+      }
+
+      try {
+        await saveSale(sale)
+
+        // Show change dialog
+        $q.dialog({
+          title: 'Change Due',
+          message: `Payment of £${cashGiven.toFixed(2)} accepted.<br><br><strong>Change to return: £${change.toFixed(2)}</strong>`,
+          html: true,
+          ok: true,
+          persistent: true
+        }).onOk(() => {
+          cart.clear()
+          router.push('/')
+        })
+
+      } catch {
+        console.log("failed to save log") // fail;ed top save the transaction// Sale save failed, do not clear cart or proceed
+      }
     })
     .onCancel(() => {
       $q.notify({ type: 'info', message: 'Cash payment cancelled.' })
     })
-  } else if (method === 'card') {
-    $q.notify({ message: 'Redirecting to card payment...', type: 'info' })
+  } 
+  
+  
+  else if (method === 'card') {
+    // For card payment, we assume full payment so payment_received = total.value
+    const sale = {
+      timestamp: new Date().toISOString(),
+      items: items.value.map(i => ({
+        barcode: i.barcode,
+        name: i.name,
+        quantity: i.quantity,
+        unit_price: i.unit_price
+      })),
+      total: total.value,
+      payment_received: total.value,
+      payment_type: 'card'
+    }
+
+    saveSale(sale)
+      .then(() => {
+        $q.notify({ message: 'Redirecting to card payment...', type: 'info' })
+        cart.clear()
+        router.push('/')
+      })
+      .catch(() => {
+        console.log("failed to save log") // fail;ed top save the transaction
+      })
   }
 }
-
 
 
 

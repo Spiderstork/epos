@@ -70,9 +70,9 @@
   <!-- Scrollable List of Items -->
   <div class="scroll-area">
     <q-bar v-for="(item, index) in items_selling" :key="index">
-      <div>£{{ item.price }}</div>
+      <div>{{ item.name }} <small>(x{{ item.quantity }})</small></div>
       <q-space />
-      <div>{{ item.name }}</div>
+      <div>£{{ (item.quantity * item.unit_price).toFixed(2) }}</div>
       <q-btn
         dense
         flat
@@ -146,7 +146,7 @@ const drawerstarter = ref(false)
 const items_selling = computed(() => cart.items)
 
 const total = computed(() =>
-  cart.items.reduce((sum, item) => sum + item.price, 0)
+  cart.items.reduce((sum, item) => sum + item.quantity * item.unit_price, 0)
 )
 
 const categoryItems = computed(() => {
@@ -177,7 +177,14 @@ function addItemFromCategory(item) {
 }
 
 function removeItem(index) {
-  cart.items.splice(index, 1)
+  const item = cart.items[index]
+  if (!item) return
+
+  if (item.quantity > 1) {
+    item.quantity -= 1
+  } else {
+    cart.items.splice(index, 1)
+  }
 }
 
 function clearItems() {

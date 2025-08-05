@@ -1,0 +1,112 @@
+[
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T19:05:26.653Z"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T19:06:24.557Z"
+  },
+  {
+    "barcode": "5055201808455",
+    "name": "leon",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T19:23:47.507Z",
+    "type": "initial"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 0,
+    "purchaseDate": "2025-08-05T19:34:18.283Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5055201808455",
+    "name": "leon",
+    "quantity": 1,
+    "unit_price": 0,
+    "purchaseDate": "2025-08-05T19:37:08.507Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 1,
+    "unit_price": 0,
+    "purchaseDate": "2025-08-05T19:39:44.690Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 0,
+    "purchaseDate": "2025-08-05T19:41:17.030Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 0,
+    "purchaseDate": "2025-08-05T19:42:25.629Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 1,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T19:43:04.179Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 1.1,
+    "purchaseDate": "2025-08-05T19:43:24.523Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 1.111,
+    "purchaseDate": "2025-08-05T19:43:44.377Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T19:44:46.354Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 4,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-05T19:46:34.634Z",
+    "type": "stock-add"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 1,
+    "unit_price": 1.22,
+    "purchaseDate": "2025-08-05T19:46:58.922Z",
+    "type": "stock-add"
+  }
+]

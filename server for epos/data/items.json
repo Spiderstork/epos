@@ -58,5 +58,31 @@
     "name": "ham",
     "price": 3,
     "category": "Food"
+  },
+  {
+    "barcode": "5050582847642",
+    "name": "uncle buck",
+    "price": 8,
+    "category": null
+  },
+  {
+    "barcode": "5051892074650",
+    "name": "final destination",
+    "price": 4,
+    "category": null
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "price": 5,
+    "quantity_in_stock": 21,
+    "category": null
+  },
+  {
+    "barcode": "5055201808455",
+    "name": "leon",
+    "price": 2,
+    "quantity_in_stock": 0,
+    "category": null
   }
 ]

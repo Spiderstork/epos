@@ -1,0 +1,84 @@
+[
+  {
+    "timestamp": "2025-08-05T20:14:00.899Z",
+    "items": [
+      {
+        "barcode": "789",
+        "name": "Coffee",
+        "quantity": 3,
+        "unit_price": 3
+      }
+    ],
+    "total": 9,
+    "payment_received": 10,
+    "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-05T20:14:30.591Z",
+    "items": [
+      {
+        "barcode": "55",
+        "name": "wood",
+        "quantity": 1,
+        "unit_price": 4.5
+      },
+      {
+        "barcode": "66",
+        "name": "ham",
+        "quantity": 1,
+        "unit_price": 3
+      },
+      {
+        "barcode": "321",
+        "name": "Burger",
+        "quantity": 1,
+        "unit_price": 6
+      }
+    ],
+    "total": 13.5,
+    "payment_received": 14,
+    "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-05T20:16:50.423Z",
+    "items": [
+      {
+        "barcode": "5055201808455",
+        "name": "leon",
+        "quantity": 1,
+        "unit_price": 2
+      }
+    ],
+    "total": 2,
+    "payment_received": 4,
+    "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-05T20:17:34.751Z",
+    "items": [
+      {
+        "barcode": "5055201808455",
+        "name": "leon",
+        "quantity": 2,
+        "unit_price": 2
+      }
+    ],
+    "total": 4,
+    "payment_received": 5,
+    "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-05T20:19:55.982Z",
+    "items": [
+      {
+        "barcode": "5055201808455",
+        "name": "leon",
+        "quantity": 1,
+        "unit_price": 2
+      }
+    ],
+    "total": 2,
+    "payment_received": 2,
+    "payment_type": "cash"
+  }
+]
