@@ -90,9 +90,13 @@
               v-model="category"
               :options="categoryOptions"
               label="Category"
-              emit-value
-              map-options
+              emit-value        
+              map-options     
+              use-input
+              new-value-mode="add"
+              @new-value="addCategory"
             />
+
           </q-col>
         </q-row>
         
@@ -111,7 +115,7 @@
   </template>
   
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 export default {
@@ -136,70 +140,96 @@ export default {
     const serverError   = ref('')
 
     /* -----------------------------
-       Category Options
+       Category Options (dynamic + addable)
     ----------------------------- */
-    const categoryOptions = [
-      { label: 'Alcohol', value: 'Alcohol' },
-      { label: 'Cafe',    value: 'Cafe' },
-      { label: 'Camp',    value: 'Camp' },
-      { label: 'Food',    value: 'Food' }
-    ]
+    const categoryOptions = ref([])
+
+    // Fetch unique categories from items.json
+    onMounted(async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/items')
+        const items = response.data
+
+        const uniqueCategories = [...new Set(
+          items
+            .map(item => item.category)
+            .filter(cat => !!cat && typeof cat === 'string' && cat.trim() !== '')
+        )]
+
+        categoryOptions.value = uniqueCategories.map(cat => ({
+          label: cat,
+          value: cat
+        }))
+      } catch (err) {
+        console.error('Failed to load categories:', err)
+      }
+    })
+
+    /* -----------------------------
+       Add New Category (if not exists)
+    ----------------------------- */
+    function addCategory(newCategory) {
+      const trimmed = newCategory.trim()
+      if (!trimmed) return
+
+      const exists = categoryOptions.value.find(opt => opt.value === trimmed)
+      if (!exists) {
+        categoryOptions.value.push({ label: trimmed, value: trimmed })
+      }
+
+      category.value = trimmed
+    }
 
     /* -----------------------------
        Form Submission
     ----------------------------- */
     async function validateForm() {
-  // Check if barcode and price match
-  barcodeError.value = barcode_1.value !== barcode_2.value
-  priceError.value = price_1.value !== price_2.value
+      barcodeError.value = barcode_1.value !== barcode_2.value
+      priceError.value = price_1.value !== price_2.value
 
-  const isValid =
-    !barcodeError.value &&
-    !priceError.value &&
-    name.value.trim() &&
-    !isNaN(parseFloat(price_1.value)) &&
-    !isNaN(parseFloat(costPerUnit.value)) &&
-    parseFloat(costPerUnit.value) > 0 &&
-    parseInt(initialStock.value) > 0
+      const isValid =
+        !barcodeError.value &&
+        !priceError.value &&
+        name.value.trim() &&
+        !isNaN(parseFloat(price_1.value)) &&
+        !isNaN(parseFloat(costPerUnit.value)) &&
+        parseFloat(costPerUnit.value) > 0 &&
+        parseInt(initialStock.value) > 0
 
-  if (!isValid) return
+      if (!isValid) return
 
-  const itemData = {
-    barcode: barcode_1.value.trim(),
-    name: name.value.trim(),
-    price: parseFloat(price_1.value),
-    quantity_in_stock: parseInt(initialStock.value),
-    cost_per_unit: parseFloat(costPerUnit.value),
-    category: category.value || null
-  }
+      const itemData = {
+        barcode: barcode_1.value.trim(),
+        name: name.value.trim(),
+        price: parseFloat(price_1.value),
+        quantity_in_stock: parseInt(initialStock.value),
+        cost_per_unit: parseFloat(costPerUnit.value),
+        category: category.value || null
+      }
 
-  try {
-    await axios.post('http://localhost:3000/save-item', itemData)
-    console.log('Item saved successfully.')
+      try {
+        await axios.post('http://localhost:3000/save-item', itemData)
+        console.log('Item saved successfully.')
 
-    // Clear form and error message
-    barcode_1.value = ''
-    barcode_2.value = ''
-    name.value = ''
-    price_1.value = ''
-    price_2.value = ''
-    initialStock.value = ''
-    costPerUnit.value = ''
-    category.value = ''
-    serverError.value = ''
-  } catch (err) {
-    if (err.response && err.response.status === 400 && err.response.data.error) {
-      serverError.value = `${err.response.data.error}`
-    } else {
-      serverError.value = 'Error saving item.'
+        // Clear form
+        barcode_1.value = ''
+        barcode_2.value = ''
+        name.value = ''
+        price_1.value = ''
+        price_2.value = ''
+        initialStock.value = ''
+        costPerUnit.value = ''
+        category.value = ''
+        serverError.value = ''
+      } catch (err) {
+        if (err.response?.status === 400 && err.response.data?.error) {
+          serverError.value = `${err.response.data.error}`
+        } else {
+          serverError.value = 'Error saving item.'
+        }
+      }
     }
-  }
-}
 
-
-    /* -----------------------------
-       Return to Template
-    ----------------------------- */
     return {
       barcode_1,
       barcode_2,
@@ -213,10 +243,9 @@ export default {
       barcodeError,
       priceError,
       serverError,
-      validateForm
+      validateForm,
+      addCategory
     }
   }
 }
 </script>
-
-  

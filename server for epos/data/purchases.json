@@ -2,111 +2,57 @@
   {
     "barcode": "5051892011709",
     "name": "seven",
-    "quantity": 2,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T19:05:26.653Z"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T19:06:24.557Z"
-  },
-  {
-    "barcode": "5055201808455",
-    "name": "leon",
-    "quantity": 2,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T19:23:47.507Z",
+    "quantity": 5,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-05T21:02:18.669Z",
     "type": "initial"
   },
   {
-    "barcode": "5051892011709",
-    "name": "seven",
+    "barcode": "5055201841223",
+    "name": "the fog",
     "quantity": 2,
-    "unit_price": 0,
-    "purchaseDate": "2025-08-05T19:34:18.283Z",
-    "type": "stock-add"
+    "unit_price": 1,
+    "purchaseDate": "2025-08-05T21:02:40.553Z",
+    "type": "initial"
   },
   {
     "barcode": "5055201808455",
     "name": "leon",
-    "quantity": 1,
-    "unit_price": 0,
-    "purchaseDate": "2025-08-05T19:37:08.507Z",
-    "type": "stock-add"
+    "quantity": 55,
+    "unit_price": 4,
+    "purchaseDate": "2025-08-05T21:03:08.217Z",
+    "type": "initial"
   },
   {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 1,
-    "unit_price": 0,
-    "purchaseDate": "2025-08-05T19:39:44.690Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 0,
-    "purchaseDate": "2025-08-05T19:41:17.030Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 0,
-    "purchaseDate": "2025-08-05T19:42:25.629Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 1,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T19:43:04.179Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 1.1,
-    "purchaseDate": "2025-08-05T19:43:24.523Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 1.111,
-    "purchaseDate": "2025-08-05T19:43:44.377Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 2,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T19:44:46.354Z",
-    "type": "stock-add"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 4,
+    "barcode": "2",
+    "name": "beer",
+    "quantity": 12,
     "unit_price": 2,
-    "purchaseDate": "2025-08-05T19:46:34.634Z",
-    "type": "stock-add"
+    "purchaseDate": "2025-08-05T21:30:26.342Z",
+    "type": "initial"
   },
   {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 1,
-    "unit_price": 1.22,
-    "purchaseDate": "2025-08-05T19:46:58.922Z",
-    "type": "stock-add"
+    "barcode": "1",
+    "name": "coffee",
+    "quantity": 5000,
+    "unit_price": 0.5,
+    "purchaseDate": "2025-08-05T21:31:59.490Z",
+    "type": "initial"
+  },
+  {
+    "barcode": "3",
+    "name": "pasty",
+    "quantity": 50,
+    "unit_price": 3,
+    "purchaseDate": "2025-08-05T21:32:30.378Z",
+    "type": "initial"
+  },
+  {
+    "barcode": "4",
+    "name": "logs",
+    "quantity": 25,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-05T21:32:58.585Z",
+    "type": "initial"
   }
 ]

@@ -207,12 +207,28 @@ function goToPaymentPage() {
 
 
 
-const rightlinksList = [
-  { title: 'Alcohol', icon: 'local_bar', link: '/' },
-  { title: 'Cafe', icon: 'local_cafe', link: '/' },
-  { title: 'Food', icon: 'restaurant', link: '/' },
-  { title: 'Camp', icon: 'park', link: '/' } 
-]
+const uniqueCategories = computed(() => {
+  const cats = items.value
+    .map(item => item.category)
+    .filter(cat => cat && typeof cat === 'string' && cat.trim() !== '')
+  return [...new Set(cats)]
+})
+
+const categoryIconMap = {
+  Alcohol: 'local_bar',
+  Cafe: 'local_cafe',
+  Food: 'restaurant',
+  Camp: 'park'
+}
+
+const rightlinksList = computed(() =>
+  uniqueCategories.value.map(cat => ({
+    title: cat,
+    icon: categoryIconMap[cat] || 'label', // fallback icon if category not in map
+    link: '/'  // or whatever link you want
+  }))
+)
+
 
 /* -----------------------------
    Lifecycle Hooks

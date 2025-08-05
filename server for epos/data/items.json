@@ -1,88 +1,51 @@
 [
   {
-    "name": "Wine",
-    "price": 10,
-    "barcode": "123",
-    "category": "Alcohol"
-  },
-  {
-    "name": "Beer",
-    "price": 8,
-    "barcode": "456",
-    "category": "Alcohol"
-  },
-  {
-    "name": "Coffee",
-    "price": 3,
-    "barcode": "789",
-    "category": "Cafe"
-  },
-  {
-    "name": "Burger",
-    "price": 6,
-    "barcode": "321",
-    "category": "Food"
-  },
-  {
-    "barcode": "5051892198080",
-    "name": "the iron giant",
-    "price": 5,
-    "category": null
-  },
-  {
-    "barcode": "5055201844163",
-    "name": "apocalypse now",
-    "price": 7,
-    "category": null
-  },
-  {
-    "barcode": "55",
-    "name": "wood",
-    "price": 4.5,
-    "category": "Camp"
-  },
-  {
-    "barcode": "5055002555718",
-    "name": "Donnie Darko",
-    "price": 2.5,
-    "category": null
-  },
-  {
-    "barcode": "5051368243931",
-    "name": "multi pack",
-    "price": 2,
-    "category": null
-  },
-  {
-    "barcode": "66",
-    "name": "ham",
-    "price": 3,
-    "category": "Food"
-  },
-  {
-    "barcode": "5050582847642",
-    "name": "uncle buck",
-    "price": 8,
-    "category": null
-  },
-  {
-    "barcode": "5051892074650",
-    "name": "final destination",
-    "price": 4,
-    "category": null
-  },
-  {
     "barcode": "5051892011709",
     "name": "seven",
-    "price": 5,
-    "quantity_in_stock": 21,
+    "price": 6.5,
+    "quantity_in_stock": 4,
+    "category": null
+  },
+  {
+    "barcode": "5055201841223",
+    "name": "the fog",
+    "price": 4,
+    "quantity_in_stock": 0,
     "category": null
   },
   {
     "barcode": "5055201808455",
     "name": "leon",
-    "price": 2,
-    "quantity_in_stock": 0,
+    "price": 7.89,
+    "quantity_in_stock": 54,
     "category": null
+  },
+  {
+    "barcode": "2",
+    "name": "beer",
+    "price": 3.5,
+    "quantity_in_stock": 12,
+    "category": "Alcohol"
+  },
+  {
+    "barcode": "1",
+    "name": "coffee",
+    "price": 4.5,
+    "quantity_in_stock": 5000,
+    "category": "Cafe"
+  },
+  {
+    "barcode": "3",
+    "name": "pasty",
+    "price": 6,
+    "quantity_in_stock": 50,
+    "category": "Food"
+  },
+  {
+    "barcode": "4",
+    "name": "logs",
+    "price": 4,
+    "quantity_in_stock": 25,
+    "category": "Camp"
   }
 ]
