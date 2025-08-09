@@ -1,0 +1,10 @@
+timestamp,total,payment_received,payment_type,item_id,item_barcode,item_name,item_quantity,item_unit_price
+2025-08-09T20:47:11.069Z,4,4,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,,gremli8ns,1,4
+2025-08-09T21:03:55.699Z,29,30,cash,08c37a85-e3c5-4a3d-ace5-bdd4f016b807,,beer,3,4
+2025-08-09T21:03:55.699Z,29,30,cash,d566bd49-4266-4772-af50-77c1b55d9dce,,coffee,2,4.5
+2025-08-09T21:03:55.699Z,29,30,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,,gremlins,2,4
+2025-08-09T22:03:36.960Z,10,20,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,,gremlins 1+2,1,5
+2025-08-09T22:03:36.960Z,10,20,cash,bf8a7c0c-1e44-4fd4-b727-7adcdb88551b,,wood,1,5
+2025-08-09T22:11:01.299Z,5,5,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,,gremlins 1+2,1,5
+2025-08-09T22:11:51.592Z,5,5,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,,gremlins 1+2,1,5
+2025-08-09T22:15:27.610Z,5,5,cash,2b954dd4-a71c-463d-95ff-76312c083f3b,5051892175067,gremlins 1+2,1,5

@@ -1,0 +1,7 @@
+id,barcodes,name,price,quantity_in_stock,category
+2b954dd4-a71c-463d-95ff-76312c083f3b,5051892227230; 5051892175067,gremlins 1+2,5,5,None
+c9500394-27aa-43ae-9d35-d510f461e995,5055201841223,the fog,3,2,None
+a84e5878-8efd-4280-bdf1-71c417876128,1,pasty,5,20,Food
+08c37a85-e3c5-4a3d-ace5-bdd4f016b807,2,beer,4,100,Bar
+d566bd49-4266-4772-af50-77c1b55d9dce,3,coffee,4.5,200,Cafe
+bf8a7c0c-1e44-4fd4-b727-7adcdb88551b,5,wood,5,50,Camp
