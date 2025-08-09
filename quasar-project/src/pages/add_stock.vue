@@ -5,7 +5,7 @@
         <div class="text-h6">Add Stock</div>
       </q-card-section>
 
-      <!-- Predictive Search Input -->
+      <!-- Search or scan -->
       <q-select
         v-model="selectedSearch"
         use-input
@@ -32,15 +32,16 @@
         </template>
       </q-select>
 
-      <!-- Item Info Display -->
+      <!-- Item info -->
       <div v-if="selectedItem">
         <q-banner class="bg-grey-2 text-black q-mb-md">
           <div><strong>Item:</strong> {{ selectedItem.name }}</div>
-          <div><strong>Barcode:</strong> {{ selectedItem.barcode }}</div>
+          <div><strong>Product ID:</strong> {{ selectedItem.id }}</div>
+          <div><strong>Scanned Barcode:</strong> {{ selectedBarcode }}</div>
           <div><strong>Current Stock:</strong> {{ selectedItem.quantity_in_stock }}</div>
         </q-banner>
 
-        <!-- Quantity to Add -->
+        <!-- Stock quantity -->
         <q-input
           v-model.number="quantityToAdd"
           label="Stock to Add"
@@ -50,19 +51,18 @@
           :rules="[val => val > 0 || 'Must be greater than 0']"
           class="q-mb-md"
         />
-        <!-- Price Per Unit -->
 
+        <!-- Price -->
         <q-input
-            v-model="pricePerUnit"
-            label="Price per Unit"
-            type="number"
-            outlined
-            dense
-            :rules="[val => !!val || 'Required']"
-            class="q-mb-md"
+          v-model="pricePerUnit"
+          label="Price per Unit"
+          type="number"
+          outlined
+          dense
+          :rules="[val => !!val || 'Required']"
+          class="q-mb-md"
         />
 
-        <!-- Submit Button -->
         <q-btn label="Add Stock" color="primary" @click="submitStockUpdate" />
       </div>
 
@@ -86,14 +86,14 @@ const allItems = ref([])
 const searchOptions = ref([])
 const selectedSearch = ref(null)
 const selectedItem = ref(null)
+const selectedBarcode = ref(null)
 const quantityToAdd = ref(0)
 const pricePerUnit = ref('')
 
 const feedback = ref('')
 const feedbackType = ref('')
 
-// Load all items initially
-const loadItems = async () => {
+async function loadItems() {
   try {
     const res = await axios.get('http://localhost:3000/api/items')
     allItems.value = res.data
@@ -104,48 +104,56 @@ const loadItems = async () => {
 }
 loadItems()
 
-// Filter function for q-select autocomplete
-const filterFn = (val, update) => {
+function filterFn(val, update) {
   update(() => {
     const term = val.toLowerCase().trim()
-
-    if (term === '') {
+    if (!term) {
       searchOptions.value = []
       return
     }
 
-    // Show barcode match if fully numeric
+    // Find all matching items
     const matches = allItems.value.filter(item =>
-      item.name.toLowerCase().includes(term) || item.barcode.includes(term)
+      item.name.toLowerCase().includes(term) ||
+      (item.barcodes || []).some(b => b.includes(term))
     )
 
-    searchOptions.value = matches.map(item => ({
-      label: `${item.name} (${item.barcode})`,
-      value: item.barcode
+    // Deduplicate by unique ID
+    const uniqueMatches = []
+    const seenIds = new Set()
+
+    for (const item of matches) {
+      if (!seenIds.has(item.id)) {
+        seenIds.add(item.id)
+        uniqueMatches.push(item)
+      }
+    }
+
+    // Build dropdown options with *all* barcodes in value
+    searchOptions.value = uniqueMatches.map(item => ({
+      label: `${item.name}${item.barcodes?.length ? ` (${item.barcodes.join(', ')})` : ''}`,
+      value: { product_id: item.id, barcode: item.barcodes || [] }
     }))
   })
 }
 
-// When user selects a search option
-const handleSelection = (barcode) => {
-  const item = allItems.value.find(i => i.barcode === barcode)
+
+function handleSelection({ product_id, barcode }) {
+  const item = allItems.value.find(i => i.id === product_id)
   selectedItem.value = item || null
-  quantityToAdd.value = 0
-  feedback.value = ''
+  selectedBarcode.value = barcode
 }
 
-const submitStockUpdate = async () => {
+async function submitStockUpdate() {
   const unitPrice = parseFloat(pricePerUnit.value)
   const quantity = quantityToAdd.value
 
-  // Check quantity is a positive integer
   if (!selectedItem.value || quantity <= 0 || !Number.isInteger(quantity)) {
     feedback.value = 'Quantity must be a positive integer.'
     feedbackType.value = 'error'
     return
   }
 
-  // Check unitPrice is positive and max 2 decimal places
   if (isNaN(unitPrice) || unitPrice <= 0 || !/^\d+(\.\d{1,2})?$/.test(pricePerUnit.value)) {
     feedback.value = 'Price per unit must be positive and have up to 2 decimal places.'
     feedbackType.value = 'error'
@@ -153,14 +161,9 @@ const submitStockUpdate = async () => {
   }
 
   try {
-    console.log('Sending:', {
-      barcode: selectedItem.value.barcode,
-      quantity_added: quantity,
-      unit_price: unitPrice
-    })
-
     await axios.post('http://localhost:3000/add_stock', {
-      barcode: selectedItem.value.barcode,
+      product_id: selectedItem.value.id,
+      barcode: selectedBarcode.value,
       quantity_added: quantity,
       unit_price: unitPrice
     })
@@ -171,6 +174,7 @@ const submitStockUpdate = async () => {
     // Reset
     selectedSearch.value = null
     selectedItem.value = null
+    selectedBarcode.value = null
     quantityToAdd.value = 0
     pricePerUnit.value = ''
     loadItems()
@@ -179,6 +183,4 @@ const submitStockUpdate = async () => {
     feedbackType.value = 'error'
   }
 }
-
-
 </script>

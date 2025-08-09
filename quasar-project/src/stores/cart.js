@@ -1,8 +1,9 @@
+// stores/cart.js
 import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    items: []
+    items: [] // each item: { id, barcode, name, quantity, unit_price }
   }),
 
   getters: {
@@ -12,13 +13,14 @@ export const useCartStore = defineStore('cart', {
   },
 
   actions: {
-    addItem(newItem) {
-      const existingItem = this.items.find(i => i.barcode === newItem.barcode)
+    addItem(newItem, scannedBarcode = null) {
+      const existingItem = this.items.find(i => i.id === newItem.id)
       if (existingItem) {
         existingItem.quantity += 1
       } else {
         this.items.push({
-          barcode: newItem.barcode,
+          id: newItem.id,
+          barcode: scannedBarcode || (newItem.barcodes?.[0] ?? ''), // keep the scanned one
           name: newItem.name,
           quantity: 1,
           unit_price: newItem.price

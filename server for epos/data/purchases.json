@@ -1,66 +1,56 @@
 [
   {
-    "barcode": "5051892011709",
-    "name": "seven",
+    "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
+    "barcode": "5051892227230",
+    "name": "gremli8ns",
     "quantity": 5,
-    "unit_price": 2,
-    "purchaseDate": "2025-08-05T21:02:18.669Z",
+    "unit_price": 1,
+    "purchaseDate": "2025-08-09T20:45:45.818Z",
     "type": "initial"
   },
   {
+    "id": "c9500394-27aa-43ae-9d35-d510f461e995",
     "barcode": "5055201841223",
     "name": "the fog",
     "quantity": 2,
-    "unit_price": 1,
-    "purchaseDate": "2025-08-05T21:02:40.553Z",
+    "unit_price": 0.5,
+    "purchaseDate": "2025-08-09T20:46:22.107Z",
     "type": "initial"
   },
   {
-    "barcode": "5055201808455",
-    "name": "leon",
-    "quantity": 55,
-    "unit_price": 4,
-    "purchaseDate": "2025-08-05T21:03:08.217Z",
+    "id": "a84e5878-8efd-4280-bdf1-71c417876128",
+    "barcode": "1",
+    "name": "pasty",
+    "quantity": 20,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-09T20:50:56.270Z",
     "type": "initial"
   },
   {
+    "id": "08c37a85-e3c5-4a3d-ace5-bdd4f016b807",
     "barcode": "2",
     "name": "beer",
-    "quantity": 12,
-    "unit_price": 2,
-    "purchaseDate": "2025-08-05T21:30:26.342Z",
+    "quantity": 100,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-09T20:52:30.814Z",
     "type": "initial"
   },
   {
-    "barcode": "1",
-    "name": "coffee",
-    "quantity": 5000,
-    "unit_price": 0.5,
-    "purchaseDate": "2025-08-05T21:31:59.490Z",
-    "type": "initial"
-  },
-  {
+    "id": "d566bd49-4266-4772-af50-77c1b55d9dce",
     "barcode": "3",
-    "name": "pasty",
+    "name": "coffee",
+    "quantity": 200,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-09T20:53:57.118Z",
+    "type": "initial"
+  },
+  {
+    "id": "bf8a7c0c-1e44-4fd4-b727-7adcdb88551b",
+    "barcode": "5",
+    "name": "wood",
     "quantity": 50,
-    "unit_price": 3,
-    "purchaseDate": "2025-08-05T21:32:30.378Z",
+    "unit_price": 2.65,
+    "purchaseDate": "2025-08-09T22:03:22.594Z",
     "type": "initial"
-  },
-  {
-    "barcode": "4",
-    "name": "logs",
-    "quantity": 25,
-    "unit_price": 2,
-    "purchaseDate": "2025-08-05T21:32:58.585Z",
-    "type": "initial"
-  },
-  {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "quantity": 5,
-    "unit_price": 2,
-    "purchaseDate": "2025-08-05T21:36:29.136Z",
-    "type": "stock-add"
   }
 ]

@@ -2,23 +2,20 @@
   <q-page class="q-pa-md">
     <q-card flat bordered>
 
-      <!-- Top Toolbar with Back Button -->
+      <!-- Toolbar -->
       <q-toolbar>
         <q-toolbar-title>Payment</q-toolbar-title>
         <q-space />
         <q-btn dense flat icon="arrow_back" @click="router.back()" aria-label="Go back" />
       </q-toolbar>
 
-      <!-- Entire content inside dynamic container -->
       <q-card-section class="dynamic-container">
-        
-        <!-- Order Summary Header -->
-        <div class="text-h6 q-mb-sm">Order Summary</div>
 
-        <!-- Scrollable order list -->
+        <!-- Order Summary -->
+        <div class="text-h6 q-mb-sm">Order Summary</div>
         <div class="scroll-area">
           <q-list>
-            <q-item v-for="(item, index) in items" :key="index">
+            <q-item v-for="(item) in items" :key="item.id">
               <q-item-section>
                 {{ item.name }} <small>(x{{ item.quantity }})</small>
               </q-item-section>
@@ -29,22 +26,21 @@
           </q-list>
         </div>
 
-        <!-- Total amount fixed below scroll -->
+        <!-- Total -->
         <div class="text-right q-mt-md text-weight-bold">
-          Total: £{{ total }}
+          Total: £{{ total.toFixed(2) }}
         </div>
 
-        <!-- Payment methods pinned at bottom -->
+        <!-- Payment Options -->
         <div class="q-mt-md">
           <div class="text-h6 q-mb-sm">Choose Payment Method</div>
           <q-btn-group spread>
             <q-btn label="Cash" color="primary" @click="submitPayment('cash')" />
-            <q-btn size="lg" label="Card" color="secondary" @click="submitPayment('card')" />
+            <q-btn label="Card" color="secondary" @click="submitPayment('card')" />
           </q-btn-group>
         </div>
 
       </q-card-section>
-
     </q-card>
   </q-page>
 </template>
@@ -102,11 +98,11 @@ function submitPayment(method) {
       }
       const change = cashGiven - total.value
 
-      // Prepare sale data
       const sale = {
         timestamp: new Date().toISOString(),
         items: items.value.map(i => ({
-          barcode: i.barcode,
+          id: i.id,
+          barcode: i.scanned_barcode || null, // keep scanned barcode if available
           name: i.name,
           quantity: i.quantity,
           unit_price: i.unit_price
@@ -118,8 +114,6 @@ function submitPayment(method) {
 
       try {
         await saveSale(sale)
-
-        // Show change dialog
         $q.dialog({
           title: 'Change Due',
           message: `Payment of £${cashGiven.toFixed(2)} accepted.<br><br><strong>Change to return: £${change.toFixed(2)}</strong>`,
@@ -130,23 +124,21 @@ function submitPayment(method) {
           cart.clear()
           router.push('/')
         })
-
       } catch {
-        console.log("failed to save log") // fail;ed top save the transaction// Sale save failed, do not clear cart or proceed
+        console.error('Failed to save sale')
       }
     })
     .onCancel(() => {
       $q.notify({ type: 'info', message: 'Cash payment cancelled.' })
     })
-  } 
-  
-  
+  }
+
   else if (method === 'card') {
-    // For card payment, we assume full payment so payment_received = total.value
     const sale = {
       timestamp: new Date().toISOString(),
       items: items.value.map(i => ({
-        barcode: i.barcode,
+        id: i.id,
+        barcode: i.scanned_barcode || null,
         name: i.name,
         quantity: i.quantity,
         unit_price: i.unit_price
@@ -163,13 +155,8 @@ function submitPayment(method) {
         router.push('/')
       })
       .catch(() => {
-        console.log("failed to save log") // fail;ed top save the transaction
+        console.error('Failed to save sale')
       })
   }
 }
-
-
-
-
 </script>
-

@@ -1,182 +1,137 @@
-import express from 'express'
-import fs from 'fs'
-import cors from 'cors'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import express from 'express';
+import fs from 'fs';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { v4 as uuidv4 } from 'uuid';
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const app = express()
-const PORT = 3000
-// felt wrong without it
-console.log("Ham")
-app.use(cors())
-app.use(express.json())
+const app = express();
+const PORT = 3000;
 
-const itemsFilePath = path.join(__dirname, 'data/items.json')
-const purchasesFilePath = path.join(__dirname, 'data/purchases.json')
+app.use(cors());
+app.use(express.json());
+
+const itemsFilePath = path.join(__dirname, 'data/items.json');
+const purchasesFilePath = path.join(__dirname, 'data/purchases.json');
+const salesFilePath = path.join(__dirname, 'data/sales.json');
+
+/* ---------------- Utility Functions ---------------- */
+function readJSON(filePath) {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeJSON(filePath, data) {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+function findItemByBarcode(barcode, items) {
+  return items.find(i => i.barcodes.includes(barcode));
+}
 
 /* ---------------- Save Item (First-Time Purchase) ---------------- */
 app.post('/save-item', (req, res) => {
-  const { barcode, name, price, quantity_in_stock, cost_per_unit, category } = req.body
+  const { barcode, barcodes, name, price, quantity_in_stock, cost_per_unit, category } = req.body;
+
+  if (!barcode && (!barcodes || !Array.isArray(barcodes) || barcodes.length === 0)) {
+    return res.status(400).json({ error: 'At least one barcode is required.' });
+  }
+
+  const items = readJSON(itemsFilePath);
+
+  const newBarcodes = barcodes && Array.isArray(barcodes) ? barcodes : [barcode];
+
+  // Prevent duplicates & tell which item it belongs to
+  const conflictItem = items.find(i =>
+    i.barcodes.some(existingB => newBarcodes.includes(existingB))
+  );
+
+  if (conflictItem) {
+    return res.status(400).json({
+      error: `Barcode already exists for item: "${conflictItem.name}"`
+    });
+  }
 
   const newItem = {
-    barcode,
+    id: uuidv4(),
+    barcodes: newBarcodes,
     name,
     price: parseFloat(price),
     quantity_in_stock: parseInt(quantity_in_stock) || 0,
     category: category || null
+  };
+
+  items.push(newItem);
+  writeJSON(itemsFilePath, items);
+
+  // Log initial purchase if stock > 0
+  const purchases = readJSON(purchasesFilePath);
+  if (newItem.quantity_in_stock > 0) {
+    purchases.push({
+      id: newItem.id,
+      barcode: newBarcodes[0],
+      name: newItem.name,
+      quantity: newItem.quantity_in_stock,
+      unit_price: parseFloat(cost_per_unit) || 0,
+      purchaseDate: new Date().toISOString(),
+      type: 'initial'
+    });
+    writeJSON(purchasesFilePath, purchases);
   }
 
-  fs.readFile(itemsFilePath, 'utf8', (err, data) => {
-    let items = []
-
-    if (!err) {
-      try {
-        items = JSON.parse(data)
-        if (!Array.isArray(items)) items = []
-      } catch {
-        items = []
-      }
-    }
-
-    const existingItem = items.find(i => i.barcode === newItem.barcode)
-    if (existingItem) {
-      return res.status(400).json({ error: `Item with barcode already exists: ${existingItem.name}` })
-    }
-
-    items.push(newItem)
-
-    fs.writeFile(itemsFilePath, JSON.stringify(items, null, 2), (writeErr) => {
-      if (writeErr) {
-        console.error('Write error:', writeErr)
-        return res.status(500).send('Failed to save item.')
-      }
-
-      // Add initial purchase record (if stock > 0)
-      const purchaseRecord = {
-        barcode: newItem.barcode,
-        name: newItem.name,
-        quantity: newItem.quantity_in_stock,
-        unit_price: parseFloat(cost_per_unit) || 0,
-        purchaseDate: new Date().toISOString(),
-        type: 'initial'
-      }
-
-      fs.readFile(purchasesFilePath, 'utf8', (pErr, pData) => {
-        let purchases = []
-
-        if (!pErr) {
-          try {
-            purchases = JSON.parse(pData)
-            if (!Array.isArray(purchases)) purchases = []
-          } catch {
-            purchases = []
-          }
-        }
-
-        if (newItem.quantity_in_stock > 0) {
-          purchases.push(purchaseRecord)
-        }
-
-        fs.writeFile(purchasesFilePath, JSON.stringify(purchases, null, 2), (pWriteErr) => {
-          if (pWriteErr) {
-            console.error('Purchase write error:', pWriteErr)
-            return res.status(500).send('Failed to save purchase record.')
-          }
-
-          res.send('Item and purchase record saved successfully.')
-        })
-      })
-    })
-  })
-})
+  res.send('Item and purchase record saved successfully.');
+});
 
 /* ---------------- Add Stock to Existing Item ---------------- */
 app.post('/add_stock', (req, res) => {
-  console.log('REQUEST BODY:', req.body)
+  const { barcode, quantity_added, unit_price } = req.body;
 
-  const { barcode, quantity_added, unit_price } = req.body
+  const parsedQuantity = parseInt(quantity_added, 10);
+  const parsedPrice = parseFloat(unit_price);
 
-  const parsedQuantity = parseInt(quantity_added, 10)
-  const parsedPrice = parseFloat(unit_price)
-
-  // Validation
-  if (
-    !barcode ||
-    isNaN(parsedQuantity) || parsedQuantity <= 0 ||
-    isNaN(parsedPrice) || parsedPrice <= 0
-  ) {
-    return res.status(400).json({ error: 'Invalid stock or unit price input.' })
+  if (!barcode || isNaN(parsedQuantity) || parsedQuantity <= 0 || isNaN(parsedPrice) || parsedPrice <= 0) {
+    return res.status(400).json({ error: 'Invalid stock or unit price input.' });
   }
 
-  fs.readFile(itemsFilePath, 'utf8', (err, data) => {
-    if (err) return res.status(500).json({ error: 'Failed to read items.' })
+  const items = readJSON(itemsFilePath);
+  const item = findItemByBarcode(barcode, items);
+  if (!item) return res.status(404).json({ error: 'Item not found.' });
 
-    let items
-    try {
-      items = JSON.parse(data)
-      if (!Array.isArray(items)) items = []
-    } catch {
-      return res.status(500).json({ error: 'Invalid items data format.' })
-    }
+  // Update stock
+  item.quantity_in_stock = (item.quantity_in_stock || 0) + parsedQuantity;
+  writeJSON(itemsFilePath, items);
 
-    const item = items.find(i => i.barcode === barcode)
-    if (!item) return res.status(404).json({ error: 'Item not found.' })
+  // Log stock addition
+  const purchases = readJSON(purchasesFilePath);
+  purchases.push({
+    id: item.id,
+    barcode,
+    name: item.name,
+    quantity: parsedQuantity,
+    unit_price: parsedPrice,
+    purchaseDate: new Date().toISOString(),
+    type: 'stock-add'
+  });
+  writeJSON(purchasesFilePath, purchases);
 
-    // Update stock
-    item.quantity_in_stock = (item.quantity_in_stock || 0) + parsedQuantity
-
-    fs.writeFile(itemsFilePath, JSON.stringify(items, null, 2), err => {
-      if (err) return res.status(500).json({ error: 'Failed to update stock.' })
-
-      const record = {
-        barcode: item.barcode,
-        name: item.name,
-        quantity: parsedQuantity,
-        unit_price: parsedPrice,
-        purchaseDate: new Date().toISOString(),
-        type: 'stock-add'
-      }
-
-      fs.readFile(purchasesFilePath, 'utf8', (pErr, pData) => {
-        let purchases = []
-        if (!pErr) {
-          try {
-            purchases = JSON.parse(pData)
-            if (!Array.isArray(purchases)) purchases = []
-          } catch {
-            purchases = []
-          }
-        }
-
-        purchases.push(record)
-
-        fs.writeFile(purchasesFilePath, JSON.stringify(purchases, null, 2), pWriteErr => {
-          if (pWriteErr) {
-            console.error('Error writing purchase record:', pWriteErr)
-            // Still return success even if logging failed
-          }
-
-          res.json({
-            success: true,
-            newStock: item.quantity_in_stock,
-            purchase: record
-          })
-        })
-      })
-    })
-  })
-})
-
-const salesFilePath = path.join(__dirname, 'data/sales.json')
+  res.json({
+    success: true,
+    newStock: item.quantity_in_stock
+  });
+});
 
 /* ---------------- Save a Sale ---------------- */
 app.post('/api/sales', (req, res) => {
-  const sale = req.body
+  const sale = req.body;
 
-  // Basic validation (same as before)
   if (
     !sale.timestamp ||
     !sale.items ||
@@ -186,104 +141,88 @@ app.post('/api/sales', (req, res) => {
     !sale.payment_type ||
     (sale.payment_type === 'cash' && (typeof sale.payment_received !== 'number' || sale.payment_received < sale.total))
   ) {
-    return res.status(400).json({ error: 'Invalid sale data' })
+    return res.status(400).json({ error: 'Invalid sale data' });
   }
 
-  fs.readFile(itemsFilePath, 'utf8', (itemsErr, itemsData) => {
-    if (itemsErr) {
-      console.error('Failed to read items:', itemsErr)
-      return res.status(500).json({ error: 'Failed to read items' })
+  const itemsList = readJSON(itemsFilePath);
+  const warnings = [];
+
+  for (const soldItem of sale.items) {
+    const item = findItemByBarcode(soldItem.barcode, itemsList);
+    if (!item) {
+      warnings.push(`Item not found: ${soldItem.name} (barcode: ${soldItem.barcode})`);
+      continue;
     }
-
-    let itemsList = []
-    try {
-      itemsList = JSON.parse(itemsData)
-      if (!Array.isArray(itemsList)) itemsList = []
-    } catch {
-      return res.status(500).json({ error: 'Invalid items data format.' })
+    if ((item.quantity_in_stock || 0) < soldItem.quantity) {
+      warnings.push(`Insufficient stock for item: ${soldItem.name}. Stock not decreased.`);
+      continue;
     }
+    item.quantity_in_stock -= soldItem.quantity;
+    soldItem.id = item.id; // Attach ID to sale record
+  }
 
-    const warnings = []
+  writeJSON(itemsFilePath, itemsList);
 
-    // For each sold item, try to decrease stock if available
-    for (const soldItem of sale.items) {
-      const item = itemsList.find(i => i.barcode === soldItem.barcode)
-      if (!item) {
-        warnings.push(`Item not found: ${soldItem.name} (barcode: ${soldItem.barcode})`)
-        continue
+  const sales = readJSON(salesFilePath);
+  sales.push(sale);
+  writeJSON(salesFilePath, sales);
+
+  res.status(201).json({
+    message: 'Sale saved successfully',
+    warnings: warnings.length > 0 ? warnings : undefined
+  });
+});
+
+app.post('/update_item', (req, res) => {
+  const updatedData = req.body;
+  const { id, barcodes } = updatedData;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Item id is required.' });
+  }
+
+  const items = readJSON(itemsFilePath);
+  const index = items.findIndex(i => i.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Item not found.' });
+  }
+
+  // Validate barcodes to prevent conflicts with other items
+  if (barcodes) {
+    // Flatten all barcodes except for current item
+    const otherBarcodes = items
+      .filter(i => i.id !== id)
+      .flatMap(i => i.barcodes);
+
+    for (const bc of barcodes) {
+      if (otherBarcodes.includes(bc)) {
+        return res.status(400).json({
+          error: `Barcode "${bc}" already exists for another item.`
+        });
       }
-      if ((item.quantity_in_stock || 0) < soldItem.quantity) {
-        warnings.push(`Insufficient stock for item: ${soldItem.name}. Stock not decreased.`)
-        // Do NOT decrease stock in this case
-        continue
-      }
-      // Decrease stock
-      item.quantity_in_stock -= soldItem.quantity
     }
+  }
 
-    // Write updated items back to items.json
-    fs.writeFile(itemsFilePath, JSON.stringify(itemsList, null, 2), (writeItemsErr) => {
-      if (writeItemsErr) {
-        console.error('Failed to update items stock:', writeItemsErr)
-        return res.status(500).json({ error: 'Failed to update items stock.' })
-      }
+  // Merge updated fields
+  items[index] = {
+    ...items[index],
+    ...updatedData
+  };
 
-      // Now read existing sales
-      fs.readFile(salesFilePath, 'utf8', (salesErr, salesData) => {
-        let sales = []
-        if (!salesErr) {
-          try {
-            sales = JSON.parse(salesData)
-            if (!Array.isArray(sales)) sales = []
-          } catch {
-            sales = []
-          }
-        }
+  writeJSON(itemsFilePath, items);
 
-        // Add new sale
-        sales.push(sale)
-
-        // Save sales.json
-        fs.writeFile(salesFilePath, JSON.stringify(sales, null, 2), (writeSalesErr) => {
-          if (writeSalesErr) {
-            console.error('Failed to save sale:', writeSalesErr)
-            return res.status(500).json({ error: 'Failed to save sale' })
-          }
-
-          // Respond success + warnings if any
-          const response = {
-            message: 'Sale saved successfully',
-            warnings: warnings.length > 0 ? warnings : undefined
-          }
-
-          res.status(201).json(response)
-        })
-      })
-    })
-  })
-})
+  res.json({ success: true, item: items[index] });
+});
 
 
 
 /* ---------------- Fetch All Items ---------------- */
 app.get('/api/items', (req, res) => {
-  fs.readFile(itemsFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Read error:', err)
-      return res.status(500).json({ error: 'Failed to read items.' })
-    }
-
-    try {
-      const items = JSON.parse(data)
-      res.json(items)
-    } catch (parseErr) {
-      console.error('Parse error:', parseErr)
-      res.status(500).json({ error: 'Invalid items data format.' })
-    }
-  })
-})
+  res.json(readJSON(itemsFilePath));
+});
 
 /* ---------------- Start Server ---------------- */
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`)
-})
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

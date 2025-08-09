@@ -1,51 +1,63 @@
 [
   {
-    "barcode": "5051892011709",
-    "name": "seven",
-    "price": 6.5,
-    "quantity_in_stock": 8,
+    "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
+    "barcodes": [
+      "5051892227230",
+      "5051892175067"
+    ],
+    "name": "gremlins 1+2",
+    "price": 5,
+    "quantity_in_stock": 6,
     "category": null
   },
   {
-    "barcode": "5055201841223",
+    "id": "c9500394-27aa-43ae-9d35-d510f461e995",
+    "barcodes": [
+      "5055201841223"
+    ],
     "name": "the fog",
-    "price": 4,
-    "quantity_in_stock": 0,
+    "price": 3,
+    "quantity_in_stock": 2,
     "category": null
   },
   {
-    "barcode": "5055201808455",
-    "name": "leon",
-    "price": 7.89,
-    "quantity_in_stock": 54,
-    "category": null
-  },
-  {
-    "barcode": "2",
-    "name": "beer",
-    "price": 3.5,
-    "quantity_in_stock": 12,
-    "category": "Alcohol"
-  },
-  {
-    "barcode": "1",
-    "name": "coffee",
-    "price": 4.5,
-    "quantity_in_stock": 4999,
-    "category": "Cafe"
-  },
-  {
-    "barcode": "3",
+    "id": "a84e5878-8efd-4280-bdf1-71c417876128",
+    "barcodes": [
+      "1"
+    ],
     "name": "pasty",
-    "price": 6,
-    "quantity_in_stock": 47,
+    "price": 5,
+    "quantity_in_stock": 20,
     "category": "Food"
   },
   {
-    "barcode": "4",
-    "name": "logs",
+    "id": "08c37a85-e3c5-4a3d-ace5-bdd4f016b807",
+    "barcodes": [
+      "2"
+    ],
+    "name": "beer",
     "price": 4,
-    "quantity_in_stock": 25,
+    "quantity_in_stock": 100,
+    "category": "Bar"
+  },
+  {
+    "id": "d566bd49-4266-4772-af50-77c1b55d9dce",
+    "barcodes": [
+      "3"
+    ],
+    "name": "coffee",
+    "price": 4.5,
+    "quantity_in_stock": 200,
+    "category": "Cafe"
+  },
+  {
+    "id": "bf8a7c0c-1e44-4fd4-b727-7adcdb88551b",
+    "barcodes": [
+      "5"
+    ],
+    "name": "wood",
+    "price": 5,
+    "quantity_in_stock": 50,
     "category": "Camp"
   }
 ]

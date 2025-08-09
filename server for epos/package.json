@@ -1,8 +1,9 @@
 {
   "version": "1.0.0",
-  "type": "module",      
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "uuidv4": "^6.2.13"
   }
 }

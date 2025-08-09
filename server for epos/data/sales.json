@@ -1,54 +1,68 @@
 [
   {
-    "timestamp": "2025-08-05T21:03:38.283Z",
+    "timestamp": "2025-08-09T20:47:11.069Z",
     "items": [
       {
-        "barcode": "5055201808455",
-        "name": "leon",
+        "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
+        "barcode": null,
+        "name": "gremli8ns",
         "quantity": 1,
-        "unit_price": 7.89
-      },
-      {
-        "barcode": "5055201841223",
-        "name": "the fog",
-        "quantity": 2,
         "unit_price": 4
-      },
-      {
-        "barcode": "5051892011709",
-        "name": "seven",
-        "quantity": 1,
-        "unit_price": 6.5
       }
     ],
-    "total": 22.39,
-    "payment_received": 25,
+    "total": 4,
+    "payment_received": 4,
     "payment_type": "cash"
   },
   {
-    "timestamp": "2025-08-05T21:36:06.659Z",
+    "timestamp": "2025-08-09T21:03:55.699Z",
     "items": [
       {
-        "barcode": "1",
+        "id": "08c37a85-e3c5-4a3d-ace5-bdd4f016b807",
+        "barcode": null,
+        "name": "beer",
+        "quantity": 3,
+        "unit_price": 4
+      },
+      {
+        "id": "d566bd49-4266-4772-af50-77c1b55d9dce",
+        "barcode": null,
         "name": "coffee",
-        "quantity": 1,
+        "quantity": 2,
         "unit_price": 4.5
       },
       {
-        "barcode": "3",
-        "name": "pasty",
-        "quantity": 3,
-        "unit_price": 6
-      },
-      {
-        "barcode": "5051892011709",
-        "name": "seven",
-        "quantity": 1,
-        "unit_price": 6.5
+        "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
+        "barcode": null,
+        "name": "gremlins",
+        "quantity": 2,
+        "unit_price": 4
       }
     ],
     "total": 29,
-    "payment_received": 40,
+    "payment_received": 30,
+    "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-09T22:03:36.960Z",
+    "items": [
+      {
+        "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
+        "barcode": null,
+        "name": "gremlins 1+2",
+        "quantity": 1,
+        "unit_price": 5
+      },
+      {
+        "id": "bf8a7c0c-1e44-4fd4-b727-7adcdb88551b",
+        "barcode": null,
+        "name": "wood",
+        "quantity": 1,
+        "unit_price": 5
+      }
+    ],
+    "total": 10,
+    "payment_received": 20,
     "payment_type": "cash"
   }
 ]
