@@ -102,7 +102,7 @@ function submitPayment(method) {
         timestamp: new Date().toISOString(),
         items: items.value.map(i => ({
           id: i.id,
-          barcode: i.scanned_barcode || null, // keep scanned barcode if available
+          barcode: i.barcode|| null, 
           name: i.name,
           quantity: i.quantity,
           unit_price: i.unit_price
