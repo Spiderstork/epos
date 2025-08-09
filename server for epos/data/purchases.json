@@ -54,5 +54,13 @@
     "unit_price": 2,
     "purchaseDate": "2025-08-05T21:32:58.585Z",
     "type": "initial"
+  },
+  {
+    "barcode": "5051892011709",
+    "name": "seven",
+    "quantity": 5,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-05T21:36:29.136Z",
+    "type": "stock-add"
   }
 ]

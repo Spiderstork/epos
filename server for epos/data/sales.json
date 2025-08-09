@@ -24,5 +24,31 @@
     "total": 22.39,
     "payment_received": 25,
     "payment_type": "cash"
+  },
+  {
+    "timestamp": "2025-08-05T21:36:06.659Z",
+    "items": [
+      {
+        "barcode": "1",
+        "name": "coffee",
+        "quantity": 1,
+        "unit_price": 4.5
+      },
+      {
+        "barcode": "3",
+        "name": "pasty",
+        "quantity": 3,
+        "unit_price": 6
+      },
+      {
+        "barcode": "5051892011709",
+        "name": "seven",
+        "quantity": 1,
+        "unit_price": 6.5
+      }
+    ],
+    "total": 29,
+    "payment_received": 40,
+    "payment_type": "cash"
   }
 ]

@@ -3,7 +3,7 @@
     "barcode": "5051892011709",
     "name": "seven",
     "price": 6.5,
-    "quantity_in_stock": 4,
+    "quantity_in_stock": 8,
     "category": null
   },
   {
@@ -31,14 +31,14 @@
     "barcode": "1",
     "name": "coffee",
     "price": 4.5,
-    "quantity_in_stock": 5000,
+    "quantity_in_stock": 4999,
     "category": "Cafe"
   },
   {
     "barcode": "3",
     "name": "pasty",
     "price": 6,
-    "quantity_in_stock": 50,
+    "quantity_in_stock": 47,
     "category": "Food"
   },
   {

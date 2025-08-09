@@ -9,7 +9,8 @@ const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = 3000
-
+// felt wrong without it
+console.log("Ham")
 app.use(cors())
 app.use(express.json())
 
