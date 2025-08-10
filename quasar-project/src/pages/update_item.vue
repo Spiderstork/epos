@@ -106,13 +106,18 @@
         />
 
         <!-- Category -->
-        <q-input
+        <q-select
           v-model="newCategory"
           label="New Category"
           outlined
           dense
-          class="q-mb-md"
+          use-input
+          input-debounce="300"
+          :options="categoryOptions"
+          @new-value="addCategory"
+          new-value-mode="add-unique"
           clearable
+          class="q-mb-md"
         />
         <q-input
           v-if="newCategory && newCategory !== (selectedItem.category || '')"
@@ -185,7 +190,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
 const allItems = ref([])
@@ -216,16 +221,29 @@ const confirmBarcodesForRemove = ref('')
 const feedback = ref('')
 const feedbackType = ref('')
 
+// Category options list for select
+const categoryOptions = ref([])
+
+// Load all items and categories
 async function loadItems() {
   try {
     const res = await axios.get('http://localhost:3000/api/items')
     allItems.value = res.data
+
+    // Extract unique categories
+    const uniqueCats = [...new Set(
+      allItems.value
+        .map(item => item.category)
+        .filter(cat => cat && cat.trim() !== '')
+    )]
+    categoryOptions.value = uniqueCats.map(cat => ({ label: cat, value: cat }))
   } catch {
     feedback.value = 'Failed to load item data.'
     feedbackType.value = 'error'
   }
 }
-loadItems()
+
+onMounted(loadItems)
 
 function filterFn(val, update) {
   update(() => {
@@ -319,12 +337,17 @@ const isConfirmed = computed(() => {
   return true
 })
 
+function addCategory(newCat) {
+  const trimmed = newCat.trim()
+  if (!trimmed) return
+  if (!categoryOptions.value.find(c => c.value === trimmed)) {
+    categoryOptions.value.push({ label: trimmed, value: trimmed })
+  }
+  newCategory.value = trimmed
+}
+
 async function submitUpdate() {
   if (!selectedItem.value) return
-
-  // Validate add/remove barcodes more carefully here:
-  // - Only allow adding one barcode at a time
-  // - Only allow removing one barcode at a time and that barcode exists in current barcodes
 
   const payload = { id: selectedItem.value.id }
 
@@ -365,7 +388,6 @@ async function submitUpdate() {
     await axios.post('http://localhost:3000/update_item', payload)
     feedback.value = 'Item updated successfully.'
     feedbackType.value = 'success'
-    // Reset form after success
     resetForm()
     selectedSearch.value = null
     selectedItem.value = null

@@ -1,7 +1,12 @@
 id,barcodes,name,price,quantity_in_stock,category
-2b954dd4-a71c-463d-95ff-76312c083f3b,5051892227230; 5051892175067,gremlins 1+2,5,5,None
+2b954dd4-a71c-463d-95ff-76312c083f3b,5051892227230; 5051892175067,gremlins 1+2,5,1,None
 c9500394-27aa-43ae-9d35-d510f461e995,5055201841223,the fog,3,2,None
 a84e5878-8efd-4280-bdf1-71c417876128,1,pasty,5,20,Food
 08c37a85-e3c5-4a3d-ace5-bdd4f016b807,2,beer,4,100,Bar
 d566bd49-4266-4772-af50-77c1b55d9dce,3,coffee,4.5,200,Cafe
 bf8a7c0c-1e44-4fd4-b727-7adcdb88551b,5,wood,5,50,Camp
+f65edf5c-d8cc-479e-a238-cbd3ac5da8e1,5039036072847,kingsman,5,5,None
+60b595c3-7336-4f15-b94c-3faebd7769bb,5051892074650,final detination,5,2,None
+1e35aa9f-df48-47a3-82a9-9ea09d4cc3bc,5051892198080,the iron giant,4,4,None
+c5482076-dd15-4fc0-8db1-acc65de1d7b6,5050582847642,uncle buck,3,4,None
+fb28eb0f-0368-4577-aece-8fd068bc7ad5,5060952899720,the light house,6,3,None
