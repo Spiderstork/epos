@@ -52,5 +52,50 @@
     "unit_price": 2.65,
     "purchaseDate": "2025-08-09T22:03:22.594Z",
     "type": "initial"
+  },
+  {
+    "id": "f65edf5c-d8cc-479e-a238-cbd3ac5da8e1",
+    "barcode": "5039036072847",
+    "name": "kingsman",
+    "quantity": 5,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-10T15:59:17.371Z",
+    "type": "initial"
+  },
+  {
+    "id": "60b595c3-7336-4f15-b94c-3faebd7769bb",
+    "barcode": "5051892074650",
+    "name": "final detination",
+    "quantity": 2,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-10T16:00:45.517Z",
+    "type": "initial"
+  },
+  {
+    "id": "1e35aa9f-df48-47a3-82a9-9ea09d4cc3bc",
+    "barcode": "5051892198080",
+    "name": "the iron giant",
+    "quantity": 4,
+    "unit_price": 0.5,
+    "purchaseDate": "2025-08-10T16:01:28.552Z",
+    "type": "initial"
+  },
+  {
+    "id": "c5482076-dd15-4fc0-8db1-acc65de1d7b6",
+    "barcode": "5050582847642",
+    "name": "uncle buck",
+    "quantity": 4,
+    "unit_price": 0.25,
+    "purchaseDate": "2025-08-10T16:01:58.313Z",
+    "type": "initial"
+  },
+  {
+    "id": "fb28eb0f-0368-4577-aece-8fd068bc7ad5",
+    "barcode": "5060952899720",
+    "name": "the light house",
+    "quantity": 3,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-10T16:02:30.379Z",
+    "type": "initial"
   }
 ]

@@ -134,6 +134,13 @@ function submitPayment(method) {
   }
 
   else if (method === 'card') {
+  $q.dialog({
+    title: 'Card Payment',
+    message: `Total is £${total.value.toFixed(2)}.`,
+    cancel: true,
+    persistent: true
+  })
+  .onOk(async () => {
     const sale = {
       timestamp: new Date().toISOString(),
       items: items.value.map(i => ({
@@ -148,15 +155,21 @@ function submitPayment(method) {
       payment_type: 'card'
     }
 
-    saveSale(sale)
-      .then(() => {
-        $q.notify({ message: 'Redirecting to card payment...', type: 'info' })
-        cart.clear()
-        router.push('/')
-      })
-      .catch(() => {
-        console.error('Failed to save sale')
-      })
-  }
+    try {
+      await saveSale(sale)
+      $q.notify({ type: 'positive', message: `Card payment of £${total.value.toFixed(2)} recorded.` })
+      cart.clear()
+      router.push('/')
+    } catch {
+      console.error('Failed to save sale')
+      $q.notify({ type: 'negative', message: 'Failed to record sale.' })
+    }
+  })
+  .onCancel(() => {
+    $q.notify({ type: 'info', message: 'Card payment cancelled.' })
+  })
+}
+
+
 }
 </script>
