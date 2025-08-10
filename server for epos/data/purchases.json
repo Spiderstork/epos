@@ -97,5 +97,23 @@
     "unit_price": 1,
     "purchaseDate": "2025-08-10T16:02:30.379Z",
     "type": "initial"
+  },
+  {
+    "id": "7fba318e-3336-403a-ae72-6fc096075448",
+    "barcode": "7",
+    "name": "bread",
+    "quantity": 10,
+    "unit_price": 0.25,
+    "purchaseDate": "2025-08-10T20:25:16.789Z",
+    "type": "initial"
+  },
+  {
+    "id": "7fba318e-3336-403a-ae72-6fc096075448",
+    "barcode": "7",
+    "name": "Bread",
+    "quantity": 5,
+    "unit_price": 0.25,
+    "purchaseDate": "2025-08-10T20:31:10.665Z",
+    "type": "stock-add"
   }
 ]

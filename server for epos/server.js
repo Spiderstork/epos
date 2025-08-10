@@ -92,17 +92,17 @@ app.post('/save-item', (req, res) => {
 
 /* ---------------- Add Stock to Existing Item ---------------- */
 app.post('/add_stock', (req, res) => {
-  const { barcode, quantity_added, unit_price } = req.body;
+  const { id, quantity_added, unit_price } = req.body;
 
   const parsedQuantity = parseInt(quantity_added, 10);
   const parsedPrice = parseFloat(unit_price);
 
-  if (!barcode || isNaN(parsedQuantity) || parsedQuantity <= 0 || isNaN(parsedPrice) || parsedPrice <= 0) {
+  if (!id || isNaN(parsedQuantity) || parsedQuantity <= 0 || isNaN(parsedPrice) || parsedPrice <= 0) {
     return res.status(400).json({ error: 'Invalid stock or unit price input.' });
   }
 
   const items = readJSON(itemsFilePath);
-  const item = findItemByBarcode(barcode, items);
+  const item = items.find(i => i.id === id);
   if (!item) return res.status(404).json({ error: 'Item not found.' });
 
   // Update stock
@@ -113,7 +113,7 @@ app.post('/add_stock', (req, res) => {
   const purchases = readJSON(purchasesFilePath);
   purchases.push({
     id: item.id,
-    barcode,
+    barcode: item.barcodes ? item.barcodes[0] : null, // optional
     name: item.name,
     quantity: parsedQuantity,
     unit_price: parsedPrice,
@@ -127,6 +127,7 @@ app.post('/add_stock', (req, res) => {
     newStock: item.quantity_in_stock
   });
 });
+
 
 /* ---------------- Save a Sale ---------------- */
 app.post('/api/sales', (req, res) => {

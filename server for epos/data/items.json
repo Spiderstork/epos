@@ -27,7 +27,7 @@
     ],
     "name": "pasty",
     "price": 5,
-    "quantity_in_stock": 20,
+    "quantity_in_stock": 19,
     "category": "Food"
   },
   {
@@ -47,7 +47,7 @@
     ],
     "name": "coffee",
     "price": 4.5,
-    "quantity_in_stock": 200,
+    "quantity_in_stock": 199,
     "category": "Cafe"
   },
   {
@@ -77,7 +77,7 @@
     ],
     "name": "final detination",
     "price": 5,
-    "quantity_in_stock": 2,
+    "quantity_in_stock": 0,
     "category": " "
   },
   {
@@ -87,7 +87,7 @@
     ],
     "name": "the iron giant",
     "price": 4,
-    "quantity_in_stock": 4,
+    "quantity_in_stock": 3,
     "category": null
   },
   {
@@ -109,5 +109,15 @@
     "price": 6,
     "quantity_in_stock": 3,
     "category": null
+  },
+  {
+    "id": "7fba318e-3336-403a-ae72-6fc096075448",
+    "barcodes": [
+      "7"
+    ],
+    "name": "Bread",
+    "price": 2,
+    "quantity_in_stock": 15,
+    "category": "bakery"
   }
 ]

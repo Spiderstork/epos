@@ -162,11 +162,10 @@ async function submitStockUpdate() {
 
   try {
     await axios.post('http://localhost:3000/add_stock', {
-      product_id: selectedItem.value.id,
-      barcode: selectedBarcode.value,
+      id: selectedItem.value.id,
       quantity_added: quantity,
       unit_price: unitPrice
-    })
+    });
 
     feedback.value = `Successfully added ${quantity} to "${selectedItem.value.name}".`
     feedbackType.value = 'success'

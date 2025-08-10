@@ -275,5 +275,41 @@
     "total": 5,
     "payment_received": 5,
     "payment_type": "card"
+  },
+  {
+    "timestamp": "2025-08-10T20:24:30.900Z",
+    "items": [
+      {
+        "id": "a84e5878-8efd-4280-bdf1-71c417876128",
+        "barcode": "1",
+        "name": "pasty",
+        "quantity": 1,
+        "unit_price": 5
+      },
+      {
+        "id": "d566bd49-4266-4772-af50-77c1b55d9dce",
+        "barcode": "3",
+        "name": "coffee",
+        "quantity": 1,
+        "unit_price": 4.5
+      },
+      {
+        "id": "60b595c3-7336-4f15-b94c-3faebd7769bb",
+        "barcode": "5051892074650",
+        "name": "final detination",
+        "quantity": 2,
+        "unit_price": 5
+      },
+      {
+        "id": "1e35aa9f-df48-47a3-82a9-9ea09d4cc3bc",
+        "barcode": "5051892198080",
+        "name": "the iron giant",
+        "quantity": 1,
+        "unit_price": 4
+      }
+    ],
+    "total": 23.5,
+    "payment_received": 24,
+    "payment_type": "cash"
   }
 ]
