@@ -2,6 +2,14 @@
   <q-page class="q-pa-md">
     <q-toolbar class="bg-primary text-white q-mb-md">
       <q-toolbar-title>Dashboard</q-toolbar-title>
+      <q-space />
+      <q-btn
+        color="secondary"
+        icon="download"
+        label="Download Excel"
+        @click="downloadAllCSV"
+        flat
+      />
     </q-toolbar>
 
     <q-inner-loading :showing="loading" color="primary" />
@@ -64,21 +72,12 @@
         <!-- Inventory by Category Pie Chart -->
         <q-card class="col-12 col-md-4 q-mb-md">
           <q-card-section>
-            <div class="text-h6">Inventory by Category</div>
-            <canvas ref="categoryPie"></canvas>
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <!-- Payment Type Pie Chart -->
-      <div class="row q-col-gutter-md">
-        <q-card class="col-12 col-md-4 q-mb-md">
-          <q-card-section>
             <div class="text-h6">Sales by Payment Type</div>
             <canvas ref="paymentPie"></canvas>
           </q-card-section>
         </q-card>
       </div>
+
 
       <!-- Per-Item Financials -->
       <q-card class="q-mb-md">
@@ -240,9 +239,7 @@ const purchaseStats = ref({
 })
 const alerts = ref([])
 const showRecentPurchases = ref(false)
-const categoryPie = ref(null)
 const paymentPie = ref(null)
-let chartInstance = null
 let paymentChartInstance = null
 
 function formatDate(dateStr) {
@@ -412,27 +409,6 @@ function computeAlerts() {
   alerts.value = alertList
 }
 
-function renderCategoryPie() {
-  if (!categoryPie.value) return
-  if (chartInstance) chartInstance.destroy()
-  const data = {
-    labels: Object.keys(inventoryStats.value.categoryData),
-    datasets: [{
-      data: Object.values(inventoryStats.value.categoryData),
-      backgroundColor: [
-        '#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#EC407A', '#FF7043', '#26A69A'
-      ]
-    }]
-  }
-  chartInstance = new Chart(categoryPie.value, {
-    type: 'pie',
-    data,
-    options: {
-      responsive: true,
-      plugins: { legend: { position: 'bottom' } }
-    }
-  })
-}
 
 function renderPaymentPie() {
   if (!paymentPie.value) return
@@ -464,6 +440,103 @@ function renderPaymentPie() {
     }
   })
 }
+async function downloadAllCSV() {
+  try {
+    // Use already loaded data if available
+    const itemsData = Array.isArray(items.value) ? items.value : []
+    const purchasesData = Array.isArray(purchases.value) ? purchases.value : []
+    const salesData = Array.isArray(sales.value) ? sales.value : []
+
+    // --- Items CSV ---
+    const itemsHeader = ['id', 'barcodes', 'name', 'price', 'quantity_in_stock', 'category']
+    const itemsRows = itemsData.map(item => [
+      item.id || '',
+      Array.isArray(item.barcodes) ? item.barcodes.join('; ') : '',
+      item.name || '',
+      item.price !== undefined ? item.price : '',
+      item.quantity_in_stock !== undefined ? item.quantity_in_stock : '',
+      item.category || ''
+    ])
+    saveCSV([itemsHeader, ...itemsRows], 'items.csv')
+
+    // --- Purchases CSV ---
+    const purchasesHeader = ['id', 'barcode', 'name', 'quantity', 'unit_price', 'purchaseDate', 'type']
+    const purchasesRows = purchasesData
+      .filter(p => p.id || p.barcode || p.name) // skip empty/invalid
+      .map(p => [
+        p.id || '',
+        p.barcode || '',
+        p.name || '',
+        p.quantity !== undefined ? p.quantity : '',
+        p.unit_price !== undefined ? p.unit_price : '',
+        p.purchaseDate || '',
+        p.type || ''
+      ])
+    saveCSV([purchasesHeader, ...purchasesRows], 'purchases.csv')
+
+    // --- Sales CSV ---
+    const salesHeader = [
+      'timestamp', 'total', 'payment_received', 'payment_type',
+      'item_id', 'item_barcode', 'item_name', 'item_quantity', 'item_unit_price'
+    ]
+    const salesRows = []
+    salesData.forEach(sale => {
+      const timestamp = sale.timestamp || ''
+      const total = sale.total !== undefined ? sale.total : ''
+      const payment_received = sale.payment_received !== undefined ? sale.payment_received : ''
+      const payment_type = sale.payment_type || ''
+      if (Array.isArray(sale.items) && sale.items.length > 0) {
+        sale.items.forEach(item => {
+          salesRows.push([
+            timestamp,
+            total,
+            payment_received,
+            payment_type,
+            item.id || '',
+            item.barcode || '',
+            item.name || '',
+            item.quantity !== undefined ? item.quantity : '',
+            item.unit_price !== undefined ? item.unit_price : ''
+          ])
+        })
+      } else {
+        // If no items, still output the sale row with empty item fields
+        salesRows.push([
+          timestamp,
+          total,
+          payment_received,
+          payment_type,
+          '', '', '', '', ''
+        ])
+      }
+    })
+    saveCSV([salesHeader, ...salesRows], 'sales.csv')
+
+    // --- Helper to save CSV ---
+    function saveCSV(rows, filename) {
+      const csv = rows.map(row =>
+        row.map(field => {
+          // Escape quotes and commas
+          const s = String(field ?? '')
+          if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+            return `"${s.replace(/"/g, '""')}"`
+          }
+          return s
+        }).join(',')
+      ).join('\r\n')
+      const blob = new Blob([csv], { type: 'text/csv' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  } catch (e) {
+    alert('Failed to download CSV: ' + e.message)
+  }
+}
+
 
 onMounted(async () => {
   await fetchAllData()
@@ -474,7 +547,6 @@ onMounted(async () => {
     computePurchaseStats()
     computeAlerts()
     await nextTick()
-    renderCategoryPie()
     renderPaymentPie()
   }
 })

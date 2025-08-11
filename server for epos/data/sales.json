@@ -200,38 +200,6 @@
     "payment_type": "card"
   },
   {
-    "timestamp": "2025-08-10T16:39:29.360Z",
-    "items": [
-      {
-        "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
-        "barcode": "5051892227230",
-        "name": "gremlins 1+2",
-        "quantity": 1,
-        "unit_price": 5
-      }
-    ],
-    "total": 5,
-    "payment_received": 2,
-    "payment_type": "cash+card",
-    "card_amount": 3
-  },
-  {
-    "timestamp": "2025-08-10T16:39:50.210Z",
-    "items": [
-      {
-        "id": "2b954dd4-a71c-463d-95ff-76312c083f3b",
-        "barcode": "5051892227230",
-        "name": "gremlins 1+2",
-        "quantity": 1,
-        "unit_price": 5
-      }
-    ],
-    "total": 5,
-    "payment_received": 2,
-    "payment_type": "cash+card",
-    "card_amount": 3
-  },
-  {
     "timestamp": "2025-08-10T16:42:52.502Z",
     "items": [
       {
