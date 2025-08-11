@@ -7,7 +7,7 @@
     ],
     "name": "gremlins 1+2",
     "price": 5,
-    "quantity_in_stock": 1,
+    "quantity_in_stock": 0,
     "category": null
   },
   {
@@ -87,7 +87,7 @@
     ],
     "name": "the iron giant",
     "price": 4,
-    "quantity_in_stock": 3,
+    "quantity_in_stock": 2,
     "category": null
   },
   {
@@ -97,7 +97,7 @@
     ],
     "name": "uncle buck",
     "price": 3,
-    "quantity_in_stock": 4,
+    "quantity_in_stock": 2,
     "category": null
   },
   {
@@ -107,7 +107,7 @@
     ],
     "name": "the light house",
     "price": 6,
-    "quantity_in_stock": 3,
+    "quantity_in_stock": 1,
     "category": null
   },
   {
