@@ -46,6 +46,7 @@ const leftlinksList = [
   { title: 'epos', icon: 'shopping_basket', link: '/' },
   { title: 'Add Item', icon: 'playlist_add', link: '/add_item' },
   { title: 'Add stock', icon: 'inventory', link: '/add_stock' },
-  { title: 'change data', icon: 'edit', link: '/update_item' }
+  { title: 'change data', icon: 'edit', link: '/update_item' },
+  { title: 'Dashboard', icon: 'edit', link: '/dashboard' }
 ]
 </script>

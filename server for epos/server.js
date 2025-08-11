@@ -223,6 +223,8 @@ app.get('/api/items', (req, res) => {
   res.json(readJSON(itemsFilePath));
 });
 
+app.use('/data', express.static(path.join(__dirname, 'data')));
+
 /* ---------------- Start Server ---------------- */
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

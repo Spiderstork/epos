@@ -8,6 +8,7 @@ const routes = [
       { path: 'add_stock', component: () => import('pages/add_stock.vue') },
       { path: 'payment', component: () => import('pages/PaymentPage.vue') },
       { path: 'update_item', component: () => import('pages/update_item.vue') },
+      { path: 'dashboard', component: () => import('pages/dashboard_interface.vue') },
     ]
   },
 
