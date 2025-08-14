@@ -200,30 +200,36 @@ function goToPaymentPage() {
 /* -----------------------------
    Lifecycle
 ----------------------------- */
-onMounted(() => {
-  const focusInput = () => barcodeInputRef.value?.focus()
-  focusInput()
-  barcodeInputRef.value?.addEventListener('blur', () => {
-    setTimeout(focusInput, 0)
-  })
-
+onMounted(async () => {
   setTimeout(() => {
     drawerstarter.value = true
   }, 1)
 
   if (authStore.password && authStore.password.trim()) {
-    loadItems()
+    await loadItems()
+    focusBarcodeInput()
   }
 })
 
-// Only load items when password is set
 watch(
   () => authStore.password,
-  (newPassword) => {
+  async (newPassword) => {
     if (newPassword && newPassword.trim()) {
-      loadItems()
+      await loadItems()
+      focusBarcodeInput()
     }
   },
   { immediate: false }
 )
+
+// Focus helper
+function focusBarcodeInput() {
+  const input = barcodeInputRef.value
+  if (input) {
+    input.focus()
+    input.onblur = () => setTimeout(() => input.focus(), 0)
+  }
+}
+
+
 </script>

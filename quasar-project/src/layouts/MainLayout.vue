@@ -67,7 +67,7 @@ import { useAuthStore } from 'src/stores/auth'
 
 const authStore = useAuthStore()
 const leftDrawerOpen = ref(false)
-const tempPassword = ref("fakepassword")
+const tempPassword = ref()
 
 // menu links
 const leftlinksList = [
