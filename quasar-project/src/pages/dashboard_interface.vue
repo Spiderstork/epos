@@ -191,6 +191,7 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
+import { api } from 'src/boot/axios'
 
 const lowStockThreshold = 5
 
@@ -253,18 +254,17 @@ async function fetchAllData() {
   error.value = null
   try {
     const [itemsRes, purchasesRes, salesRes] = await Promise.all([
-      fetch('http://localhost:3000/api/items'),
-      fetch('http://localhost:3000/data/purchases.json'),
-      fetch('http://localhost:3000/data/sales.json')
+      api.get('/api/items'),
+      api.get('/data/purchases.json'),
+      api.get('/data/sales.json')
     ])
-    if (!itemsRes.ok) throw new Error('Failed to fetch items')
-    if (!purchasesRes.ok) throw new Error('Failed to fetch purchases')
-    if (!salesRes.ok) throw new Error('Failed to fetch sales')
-    items.value = await itemsRes.json()
-    purchases.value = await purchasesRes.json()
-    sales.value = await salesRes.json()
+    
+    // Axios responses put data in `res.data`
+    items.value = itemsRes.data
+    purchases.value = purchasesRes.data
+    sales.value = salesRes.data
   } catch (e) {
-    error.value = e.message
+    error.value = e.response?.data?.message || e.message || 'Unknown error'
   } finally {
     loading.value = false
   }

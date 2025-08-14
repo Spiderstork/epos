@@ -8,6 +8,30 @@
           Primrose Farm Holidays
         </q-toolbar-title>
 
+        <!-- Password Dropdown Button -->
+       <q-btn-dropdown
+        outline
+        icon="lock"
+        label="Login"
+        class="q-ml-auto"
+      >
+        <div class="q-pa-md" style="min-width: 200px">
+          <q-input
+            v-model="tempPassword"
+            type="password"
+            label="Enter Password"
+            dense
+            outlined
+            @keyup.enter="submitPassword"
+          />
+          <q-btn
+            label="Submit"
+            color="primary"
+            class="q-mt-sm full-width"
+            @click="submitPassword"
+          />
+        </div>
+      </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
@@ -22,11 +46,11 @@
       </q-toolbar>
 
       <q-list>
-      <EssentialLink
-        v-for="link in leftlinksList"
-        :key="link.title"
-        v-bind="link"
-      />
+        <EssentialLink
+          v-for="link in leftlinksList"
+          :key="link.title"
+          v-bind="link"
+        />
       </q-list>
     </q-drawer>
 
@@ -39,9 +63,13 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import { useAuthStore } from 'src/stores/auth'
 
+const authStore = useAuthStore()
 const leftDrawerOpen = ref(false)
+const tempPassword = ref("fakepassword")
 
+// menu links
 const leftlinksList = [
   { title: 'epos', icon: 'shopping_basket', link: '/' },
   { title: 'Add Item', icon: 'playlist_add', link: '/add_item' },
@@ -49,4 +77,9 @@ const leftlinksList = [
   { title: 'change data', icon: 'edit', link: '/update_item' },
   { title: 'Dashboard', icon: 'dashboard', link: '/dashboard' }
 ]
+
+// saves the password to Pinia store
+function submitPassword() {
+  authStore.setPassword(tempPassword.value)
+}
 </script>

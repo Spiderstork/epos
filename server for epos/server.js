@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -17,7 +18,20 @@ app.use(express.json());
 const itemsFilePath = path.join(__dirname, 'data/items.json');
 const purchasesFilePath = path.join(__dirname, 'data/purchases.json');
 const salesFilePath = path.join(__dirname, 'data/sales.json');
+import dotenv from 'dotenv';
+dotenv.config();
 
+// Very simple password check
+function passwordProtect(req, res, next) {
+  const password = req.headers['x-app-password'];
+  if (password && password === process.env.APP_PASSWORD) {
+    next(); // Password correct → move to route
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+}
+app.use(passwordProtect);
+console.log('Password from env:', process.env.APP_PASSWORD);
 /* ---------------- Utility Functions ---------------- */
 function readJSON(filePath) {
   try {

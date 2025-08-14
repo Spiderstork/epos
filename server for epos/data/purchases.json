@@ -115,5 +115,50 @@
     "unit_price": 0.25,
     "purchaseDate": "2025-08-10T20:31:10.665Z",
     "type": "stock-add"
+  },
+  {
+    "id": "c5482076-dd15-4fc0-8db1-acc65de1d7b6",
+    "barcode": "5050582847642",
+    "name": "uncle buck",
+    "quantity": 5,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-14T17:54:49.236Z",
+    "type": "stock-add"
+  },
+  {
+    "id": "ea333669-60c9-461a-98b3-dbcf8973dc9e",
+    "barcode": "8",
+    "name": "burger",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-14T18:17:43.220Z",
+    "type": "initial"
+  },
+  {
+    "id": "bba0fe3c-00b8-48a3-89d3-19e2443ec741",
+    "barcode": "13",
+    "name": "bt",
+    "quantity": 3,
+    "unit_price": 3,
+    "purchaseDate": "2025-08-14T18:36:54.629Z",
+    "type": "initial"
+  },
+  {
+    "id": "4184491a-2467-4070-9098-bf8b3ad052e9",
+    "barcode": "43",
+    "name": "34",
+    "quantity": 2,
+    "unit_price": 2,
+    "purchaseDate": "2025-08-14T18:37:37.345Z",
+    "type": "initial"
+  },
+  {
+    "id": "ea333669-60c9-461a-98b3-dbcf8973dc9e",
+    "barcode": "8",
+    "name": "burger",
+    "quantity": 2,
+    "unit_price": 1,
+    "purchaseDate": "2025-08-14T18:58:03.726Z",
+    "type": "stock-add"
   }
 ]

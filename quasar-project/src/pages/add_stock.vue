@@ -79,8 +79,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref, watch, onMounted } from 'vue'
+import { api } from 'src/boot/axios'
+import { useAuthStore } from 'src/stores/auth'
+
+const authStore = useAuthStore()
 
 const allItems = ref([])
 const searchOptions = ref([])
@@ -95,14 +98,14 @@ const feedbackType = ref('')
 
 async function loadItems() {
   try {
-    const res = await axios.get('http://localhost:3000/api/items')
+    const res = await api.get('/api/items') // ✅ interceptor will add password
     allItems.value = res.data
-  } catch {
-    feedback.value = 'Failed to load item data.'
+  } catch (err) {
+    console.error(err)
+    feedback.value = 'Failed to load item data. Check password or server.'
     feedbackType.value = 'error'
   }
 }
-loadItems()
 
 function filterFn(val, update) {
   update(() => {
@@ -111,32 +114,24 @@ function filterFn(val, update) {
       searchOptions.value = []
       return
     }
-
-    // Find all matching items
     const matches = allItems.value.filter(item =>
       item.name.toLowerCase().includes(term) ||
       (item.barcodes || []).some(b => b.includes(term))
     )
-
-    // Deduplicate by unique ID
     const uniqueMatches = []
     const seenIds = new Set()
-
     for (const item of matches) {
       if (!seenIds.has(item.id)) {
         seenIds.add(item.id)
         uniqueMatches.push(item)
       }
     }
-
-    // Build dropdown options with *all* barcodes in value
     searchOptions.value = uniqueMatches.map(item => ({
       label: `${item.name}${item.barcodes?.length ? ` (${item.barcodes.join(', ')})` : ''}`,
       value: { product_id: item.id, barcode: item.barcodes || [] }
     }))
   })
 }
-
 
 function handleSelection({ product_id, barcode }) {
   const item = allItems.value.find(i => i.id === product_id)
@@ -161,25 +156,42 @@ async function submitStockUpdate() {
   }
 
   try {
-    await axios.post('http://localhost:3000/add_stock', {
+    await api.post('/add_stock', {
       id: selectedItem.value.id,
       quantity_added: quantity,
       unit_price: unitPrice
-    });
+    })
 
     feedback.value = `Successfully added ${quantity} to "${selectedItem.value.name}".`
     feedbackType.value = 'success'
 
-    // Reset
     selectedSearch.value = null
     selectedItem.value = null
     selectedBarcode.value = null
     quantityToAdd.value = 0
     pricePerUnit.value = ''
     loadItems()
-  } catch {
-    feedback.value = 'Failed to update stock.'
+  } catch (err) {
+    console.error(err)
+    feedback.value = 'Failed to update stock. Check password or server.'
     feedbackType.value = 'error'
   }
 }
+
+// -----------------------------
+// Load items only after password is set
+// -----------------------------
+watch(
+  () => authStore.password,
+  (newPassword) => {
+    if (newPassword && newPassword.trim()) {
+      loadItems()
+    }
+  },
+  { immediate: false }
+)
+
+onMounted(() => {
+  if (authStore.password) loadItems() // in case password is already set
+})
 </script>

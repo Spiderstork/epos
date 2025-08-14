@@ -401,5 +401,42 @@
     "total": 29,
     "payment_received": 29,
     "payment_type": "card"
+  },
+  {
+    "timestamp": "2025-08-14T18:50:57.683Z",
+    "items": [
+      {
+        "id": "4184491a-2467-4070-9098-bf8b3ad052e9",
+        "barcode": "43",
+        "name": "43",
+        "quantity": 1,
+        "unit_price": 3
+      },
+      {
+        "id": "bf8a7c0c-1e44-4fd4-b727-7adcdb88551b",
+        "barcode": "5",
+        "name": "wood",
+        "quantity": 1,
+        "unit_price": 5
+      }
+    ],
+    "total": 8,
+    "payment_received": 8,
+    "payment_type": "card"
+  },
+  {
+    "timestamp": "2025-08-14T19:05:05.315Z",
+    "items": [
+      {
+        "id": "d566bd49-4266-4772-af50-77c1b55d9dce",
+        "barcode": "3",
+        "name": "coffee",
+        "quantity": 1,
+        "unit_price": 4.5
+      }
+    ],
+    "total": 4.5,
+    "payment_received": 4.5,
+    "payment_type": "card"
   }
 ]

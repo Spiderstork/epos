@@ -49,8 +49,8 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from 'stores/cart'
-import axios from 'axios'
 import { useQuasar } from 'quasar'
+import { api } from 'src/boot/axios'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -61,7 +61,7 @@ const total = computed(() => cart.total)
 
 async function saveSale(sale) {
   try {
-    await axios.post('http://localhost:3000/api/sales', sale)
+    await api.post('/api/sales', sale)
     $q.notify({ type: 'positive', message: 'Sale saved successfully.' })
   } catch (error) {
     $q.notify({ type: 'negative', message: 'Failed to save sale.' })

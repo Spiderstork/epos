@@ -47,7 +47,7 @@
     ],
     "name": "coffee",
     "price": 4.5,
-    "quantity_in_stock": 199,
+    "quantity_in_stock": 198,
     "category": "Cafe"
   },
   {
@@ -57,7 +57,7 @@
     ],
     "name": "wood",
     "price": 5,
-    "quantity_in_stock": 50,
+    "quantity_in_stock": 49,
     "category": "Camp"
   },
   {
@@ -93,11 +93,12 @@
   {
     "id": "c5482076-dd15-4fc0-8db1-acc65de1d7b6",
     "barcodes": [
-      "5050582847642"
+      "5050582847642",
+      "12"
     ],
     "name": "uncle buck",
     "price": 3,
-    "quantity_in_stock": 2,
+    "quantity_in_stock": 7,
     "category": null
   },
   {
@@ -119,5 +120,35 @@
     "price": 2,
     "quantity_in_stock": 15,
     "category": "bakery"
+  },
+  {
+    "id": "ea333669-60c9-461a-98b3-dbcf8973dc9e",
+    "barcodes": [
+      "8"
+    ],
+    "name": "burger",
+    "price": 2,
+    "quantity_in_stock": 4,
+    "category": "Food"
+  },
+  {
+    "id": "bba0fe3c-00b8-48a3-89d3-19e2443ec741",
+    "barcodes": [
+      "13"
+    ],
+    "name": "bt",
+    "price": 6,
+    "quantity_in_stock": 3,
+    "category": "1"
+  },
+  {
+    "id": "4184491a-2467-4070-9098-bf8b3ad052e9",
+    "barcodes": [
+      "43"
+    ],
+    "name": "43",
+    "price": 3,
+    "quantity_in_stock": 1,
+    "category": "1"
   }
 ]

@@ -91,24 +91,21 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCartStore } from 'stores/cart'
+import { useAuthStore } from 'stores/auth'
 import EssentialLink from 'components/EssentialLink.vue'
-import axios from 'axios'
+import { api } from 'src/boot/axios' 
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const cart = useCartStore()
-const items = ref([])
-
-onMounted(async () => {
-  const response = await axios.get('http://localhost:3000/api/items')
-  items.value = response.data
-})
+const authStore = useAuthStore()
 
 /* -----------------------------
    State
 ----------------------------- */
+const items = ref([])
 const barcodeInput = ref('')
 const barcodeInputRef = ref(null)
 const selectedCategory = ref(null)
@@ -151,6 +148,16 @@ const rightlinksList = computed(() =>
 /* -----------------------------
    Methods
 ----------------------------- */
+async function loadItems() {
+  try {
+    const response = await api.get('/api/items') // ✅ uses password header
+    items.value = response.data
+  } catch (err) {
+    console.error('Failed to load items:', err)
+    alert('Error loading items — maybe password is wrong?')
+  }
+}
+
 function addItemByBarcode() {
   const code = barcodeInput.value.trim()
   if (!code) return
@@ -195,7 +202,6 @@ function goToPaymentPage() {
 ----------------------------- */
 onMounted(() => {
   const focusInput = () => barcodeInputRef.value?.focus()
-
   focusInput()
   barcodeInputRef.value?.addEventListener('blur', () => {
     setTimeout(focusInput, 0)
@@ -204,5 +210,20 @@ onMounted(() => {
   setTimeout(() => {
     drawerstarter.value = true
   }, 1)
+
+  if (authStore.password && authStore.password.trim()) {
+    loadItems()
+  }
 })
+
+// Only load items when password is set
+watch(
+  () => authStore.password,
+  (newPassword) => {
+    if (newPassword && newPassword.trim()) {
+      loadItems()
+    }
+  },
+  { immediate: false }
+)
 </script>

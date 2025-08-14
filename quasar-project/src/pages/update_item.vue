@@ -191,7 +191,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import { api } from 'src/boot/axios'
 
 const allItems = ref([])
 const searchOptions = ref([])
@@ -227,7 +227,7 @@ const categoryOptions = ref([])
 // Load all items and categories
 async function loadItems() {
   try {
-    const res = await axios.get('http://localhost:3000/api/items')
+    const res = await api.get('/api/items')
     allItems.value = res.data
 
     // Extract unique categories
@@ -385,7 +385,7 @@ async function submitUpdate() {
   }
 
   try {
-    await axios.post('http://localhost:3000/update_item', payload)
+    await api.post('/update_item', payload)
     feedback.value = 'Item updated successfully.'
     feedbackType.value = 'success'
     resetForm()
